@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/26389694/README.md)
+[README.md](https://github.com/user-attachments/files/26390083/README.md)
 # Interview Case Coach
 
 A three-part prep system for decomposition-style case interviews, built for consulting and business operations roles. Includes a static reference guide, a model answers document, and an AI-powered live practice tool.
