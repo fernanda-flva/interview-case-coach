@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Model Answers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0F1117;
+    --bg2: #161920;
+    --bg3: #1E2230;
+    --bg4: #252A3A;
+    --surface: #1A1F2E;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.14);
+    --text: #E8EAF0;
+    --text-mid: #9DA3B4;
+    --text-soft: #6B7280;
+    --blue: #5B8DEF;
+    --blue-dim: rgba(91,141,239,0.12);
+    --blue-border: rgba(91,141,239,0.3);
+    --gold: #E2A832;
+    --gold-dim: rgba(226,168,50,0.1);
+    --gold-border: rgba(226,168,50,0.3);
+    --green: #4CAF82;
+    --green-dim: rgba(76,175,130,0.1);
+    --green-border: rgba(76,175,130,0.3);
+    --red: #E05E5E;
+    --red-dim: rgba(224,94,94,0.1);
+    --red-border: rgba(224,94,94,0.3);
+    --purple: #A78BFA;
+    --purple-dim: rgba(167,139,250,0.1);
+    --purple-border: rgba(167,139,250,0.3);
+    --teal: #38BDF8;
+    --teal-dim: rgba(56,189,248,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* SIDEBAR NAV */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .sidebar-brand {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 4px;
+  }
+  .sidebar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .nav-section-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    padding: 12px 20px 6px;
+    font-weight: 600;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .nav-item.active { color: var(--blue); border-left-color: var(--blue); background: var(--blue-dim); }
+  .nav-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-soft);
+    min-width: 18px;
+  }
+  .nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 12px 20px;
+  }
+  .nav-item.special { color: var(--purple); }
+  .nav-item.special:hover { background: var(--purple-dim); }
+
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    padding: 0 0 100px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 56px 56px 48px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--bg2) 0%, var(--bg) 100%);
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero-subtitle {
+    font-size: 14px;
+    color: var(--text-mid);
+    max-width: 680px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .hero-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-pill {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+  .pill-blue  { color: var(--blue);  background: var(--blue-dim);  border-color: var(--blue-border); }
+  .pill-gold  { color: var(--gold);  background: var(--gold-dim);  border-color: var(--gold-border); }
+  .pill-green { color: var(--green); background: var(--green-dim); border-color: var(--green-border); }
+  .pill-red   { color: var(--red);   background: var(--red-dim);   border-color: var(--red-border); }
+  .pill-purple{ color: var(--purple);background: var(--purple-dim);border-color: var(--purple-border);}
+
+  /* CASE SECTION */
+  .case-section {
+    padding: 0 56px;
+    margin-top: 56px;
+  }
+
+  .case-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .case-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    color: var(--border-bright);
+    line-height: 1;
+    min-width: 56px;
+    padding-top: 4px;
+  }
+  .case-header-right { flex: 1; }
+  .case-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .case-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .case-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* PROMPT BOX */
+  .prompt-box {
+    background: var(--bg3);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--text-soft);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* CANDIDATE SPEECH BUBBLE */
+  .candidate-block {
+    margin-bottom: 20px;
+  }
+  .speaker-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .speaker-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .speaker-label.candidate { color: var(--blue); }
+  .speaker-label.interviewer { color: var(--gold); }
+  .speaker-label.aside { color: var(--purple); }
+
+  .speech {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .speech.candidate-speech {
+    border-left: 3px solid var(--blue);
+    background: rgba(91,141,239,0.04);
+  }
+  .speech.interviewer-speech {
+    border-left: 3px solid var(--gold);
+    background: rgba(226,168,50,0.04);
+  }
+  .speech.aside-speech {
+    border-left: 3px solid var(--purple);
+    background: var(--purple-dim);
+    font-size: 12.5px;
+    color: var(--text-mid);
+  }
+  .speech em { color: var(--text-mid); font-style: italic; }
+  .speech strong { color: var(--text); font-weight: 600; }
+
+  /* INLINE FRAMEWORK */
+  .framework-grid {
+    display: grid;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .framework-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .framework-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .fw-card {
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid;
+  }
+  .fw-card.blue  { background: var(--blue-dim);   border-color: var(--blue-border); }
+  .fw-card.gold  { background: var(--gold-dim);   border-color: var(--gold-border); }
+  .fw-card.green { background: var(--green-dim);  border-color: var(--green-border); }
+  .fw-card.red   { background: var(--red-dim);    border-color: var(--red-border); }
+  .fw-card.purple{ background: var(--purple-dim); border-color: var(--purple-border); }
+  .fw-card-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .fw-card.blue   .fw-card-label { color: var(--blue); }
+  .fw-card.gold   .fw-card-label { color: var(--gold); }
+  .fw-card.green  .fw-card-label { color: var(--green); }
+  .fw-card.red    .fw-card-label { color: var(--red); }
+  .fw-card.purple .fw-card-label { color: var(--purple); }
+  .fw-card-text { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+
+  /* LOGIC TREE */
+  .logic-tree {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .logic-tree-head {
+    background: var(--bg3);
+    padding: 10px 16px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .logic-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .logic-row:last-child { border-bottom: none; }
+  .logic-step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-soft);
+    padding: 12px 14px;
+    min-width: 40px;
+    border-right: 1px solid var(--border);
+    background: var(--bg3);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .logic-step-content {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .logic-step-content strong { color: var(--text); font-weight: 600; }
+  .logic-step-content em { color: var(--text-mid); font-style: italic; }
+
+  /* INLINE LIST */
+  .inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+  .inline-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-bright);
+    background: var(--bg3);
+    color: var(--text-mid);
+  }
+
+  /* DIVIDER SECTION */
+  .sub-section {
+    margin: 28px 0 16px;
+  }
+  .sub-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sub-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ALT APPROACHES */
+  .alt-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+  .alt-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .alt-badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .alt-badge.weak  { background: var(--red-dim);    color: var(--red);    border: 1px solid var(--red-border); }
+  .alt-badge.ok    { background: var(--gold-dim);   color: var(--gold);   border: 1px solid var(--gold-border); }
+  .alt-badge.strong{ background: var(--green-dim);  color: var(--green);  border: 1px solid var(--green-border); }
+  .alt-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .alt-card-body { font-size: 12.5px; color: var(--text-mid); line-height: 1.6; }
+
+  /* SEPARATOR */
+  .case-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 64px 56px 0;
+  }
+
+  /* THEMES SECTION */
+  .themes-section {
+    margin: 64px 56px 0;
+    padding: 40px;
+    background: var(--bg2);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+  }
+  .themes-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--purple);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .themes-subtitle {
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .theme-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    align-items: start;
+  }
+  .theme-item:first-of-type { border-top: none; }
+  .theme-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .theme-applies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .theme-q-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--purple-dim);
+    color: var(--purple);
+    border: 1px solid var(--purple-border);
+  }
+  .theme-body { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+  .theme-body strong { color: var(--text); font-weight: 500; }
+  .theme-body .mantra {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    background: var(--purple-dim);
+    border: 1px solid var(--purple-border);
+    border-radius: 4px;
+    color: var(--purple);
+    margin: 4px 0;
+  }
+
+  /* CHECKIN MOMENT */
+  .checkin-moment {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 12.5px;
+    color: var(--gold);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+  .checkin-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+  /* ASSUMPTION BLOCK */
+  .assumption-block {
+    background: var(--teal-dim);
+    border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 12.5px;
+    color: var(--teal);
+    line-height: 1.55;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+  @media (max-width: 960px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .case-section, .case-divider, .themes-section { padding-left: 24px; padding-right: 24px; }
+    .themes-section { margin-left: 24px; margin-right: 24px; }
+    .framework-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+    .theme-item { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-eyebrow">Model Candidate Answers</div>
+    <div class="sidebar-title">Case Decomposition</div>
+  </div>
+  <div class="nav-section-label">Cases</div>
+  <a href="#q1" class="nav-item active"><span class="nav-num">01</span>Disappearing Revenue</a>
+  <a href="#q2" class="nav-item"><span class="nav-num">02</span>Hospital Wait Times</a>
+  <a href="#q3" class="nav-item"><span class="nav-num">03</span>Taxi Intelligence System</a>
+  <a href="#q4" class="nav-item"><span class="nav-num">04</span>Warehouse Dispatch</a>
+  <a href="#q5" class="nav-item"><span class="nav-num">05</span>Feature Nobody Uses</a>
+  <a href="#q6" class="nav-item"><span class="nav-num">06</span>Scope Creep</a>
+  <div class="nav-divider"></div>
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Extended Cases</div>
+  <a href="#q7" class="nav-item"><span class="nav-num">07</span>Energy Grid Anomaly</a>
+  <a href="#q8" class="nav-item"><span class="nav-num">08</span>AI Deployment Failure</a>
+  <a href="#q9" class="nav-item"><span class="nav-num">09</span>City Emergency Response</a>
+  <a href="#q10" class="nav-item"><span class="nav-num">10</span>Manufacturing Yield</a>
+  <a href="#q11" class="nav-item"><span class="nav-num">11</span>Market Entry Bad Data</a>
+  <a href="#q12" class="nav-item"><span class="nav-num">12</span>Tool Nobody Adopted</a>
+  <div class="nav-divider"></div>
+  <a href="#themes" class="nav-item special"><span class="nav-num">↗</span>Recurring Themes</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Candidate Perspective · Senior Business Operations & Strategy</div>
+    <div class="hero-title">Model Answers:<br>Decomposition Interview</div>
+    <div class="hero-subtitle">
+      Full worked solutions to all six cases — structured as a live conversation between candidate and interviewer. 
+      Each case includes the reasoning process, explicit assumptions, alternative approaches, and check-in moments. 
+      A recurring themes section closes the guide with transferable frameworks for any variation.
+    </div>
+    <div class="hero-pills">
+      <span class="hero-pill pill-blue">Analytical Decomposition</span>
+      <span class="hero-pill pill-gold">Strategic Reasoning</span>
+      <span class="hero-pill pill-green">Operations Logic</span>
+      <span class="hero-pill pill-red">Product Thinking</span>
+      <span class="hero-pill pill-purple">Transferable Frameworks</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 01 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q1">
+    <div class="case-header">
+      <div class="case-number">01</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--blue)">Analytical · Strategic</div>
+        <div class="case-title">The Disappearing Revenue</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-blue">Revenue Decomposition</span>
+          <span class="hero-pill pill-gold">Hypothesis Generation</span>
+          <span class="hero-pill pill-green">Segment Analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "A mid-size UK retailer tells you their online revenue dropped 18% over the past 90 days. Their traffic is flat, their product catalog hasn't changed, and their marketing spend is actually up. You have access to transaction-level data: timestamp, product ID, customer ID, order value, payment method, device type, and region. Where do you start?"
+    </div>
+
+    <!-- STEP 1: CLARIFY -->
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Opening Move: Reframe Before Analyzing</div>
+      <div class="speech candidate-speech">
+        Before I touch the data, I want to make sure I understand what we're actually measuring. When you say revenue is down 18% — is that total revenue, or revenue per session? And is the drop driven by fewer orders, smaller orders, or both? 
+        <br><br>
+        The reason I ask is that <strong>revenue = order volume × average order value</strong>, and these two levers have completely different root causes. A volume drop usually points to conversion or funnel issues. An AOV drop often points to product mix, discount behavior, or customers trading down. I'd want to know which one is doing the work before I build any hypothesis.
+        <br><br>
+        Also — when you say traffic is flat, is that sessions? Unique visitors? And is the traffic source mix stable, or are we seeing a shift from, say, organic to paid? Because if marketing spend is up but the traffic quality has changed — we're getting more people who are less likely to buy — that could explain a lot without any site-side problem at all.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        Good questions. Let's say it's a mix — volume is down about 12%, AOV is down about 6%. Sessions are flat. The traffic is coming from mostly paid search, which has increased as a channel share over the past 90 days.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label aside">Candidate's Internal Reasoning (Surfaced Out Loud)</div>
+      <div class="speech aside-speech">
+        <em>This is actually a significant clue. Paid search volume increasing as a share while organic stays flat means the customer intent profile may have shifted. Paid search attracts higher-intent but lower-loyalty buyers — they often have lower AOV because they're searching for specific items, not browsing. This could explain both the volume drop (paid has lower session quality) and the AOV drop (less basket-building). I'll flag this as my top hypothesis immediately.</em>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Hypothesis Structure</div>
+      <div class="speech candidate-speech">
+        Okay, that paid search shift is really interesting. Let me lay out the framework I want to use to work through this, and then I'll rank my hypotheses.
+        <br><br>
+        I want to segment the problem across three dimensions first:
+
+        <div class="framework-grid cols-3" style="margin-top:14px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Traffic Quality</div>
+            <div class="fw-card-text">Has the mix of high-intent vs browse traffic changed? Paid vs organic vs direct shifts all carry different conversion expectations.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Funnel Behavior</div>
+            <div class="fw-card-text">Where in the funnel are we losing people? Product page? Cart? Payment? Each drop-off zone implies a different fix.</div>
+          </div>
+          <div class="fw-card green">
+            <div class="fw-card-label">Transaction Structure</div>
+            <div class="fw-card-text">Which products, regions, devices, and payment methods are most affected? Concentration = a clue about the cause.</div>
+          </div>
+        </div>
+
+        My ranked hypotheses, based on what you've told me:
+
+        <div class="logic-tree" style="margin-top:14px;">
+          <div class="logic-tree-head">Hypotheses — ranked by likelihood given the data shared</div>
+          <div class="logic-row">
+            <div class="logic-step-num">H1</div>
+            <div class="logic-step-content"><strong>Paid search traffic is lower quality, depressing both conversion rate and AOV.</strong> <em>If paid visitors are searching for specific low-price items, they buy less and browse less. Test: compare conversion rate and AOV for paid vs organic sessions. If organic is holding and paid is down, this is confirmed.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">H2</div>
+            <div class="logic-step-content"><strong>A checkout or payment friction point appeared in the last 90 days.</strong> <em>Flat traffic with lower conversion usually means something broke in the funnel. Test: look at cart abandonment rate by device type. If mobile abandonment spiked specifically at the payment step, suspect a gateway or UX regression.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">H3</div>
+            <div class="logic-step-content"><strong>Product mix shifted — high-AOV categories are being purchased less.</strong> <em>Even with the same catalog, customers may be gravitating toward lower-price items due to external economic pressure or seasonality. Test: look at revenue by product category. If top-quartile SKUs lost share, this is it.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">H4</div>
+            <div class="logic-step-content"><strong>A specific region or device segment has nearly stopped converting.</strong> <em>If one region represents 30% of volume and dropped to near-zero, the overall 18% becomes explainable by a local event. Test: revenue by region × device over time, look for a single segment that fell off a cliff.</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Before I go deeper on any of these — does H1 resonate with what your team has been seeing, or is there a signal I'm not picking up on yet? I want to make sure I'm not running in the wrong direction."</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        The paid search quality angle is interesting but the business says their campaign targeting hasn't changed. Let's assume H1 is less likely. What's your next move?
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Drilling Into H2 and H3</div>
+      <div class="speech candidate-speech">
+        Perfect — I'd pivot straight to the funnel analysis. From the transaction data I have, I can derive a crude conversion funnel by looking at timestamps: <strong>how many sessions resulted in a completed purchase vs. abandoned at various stages</strong>. I can also look at whether the abandonment pattern changed in the 90-day window.
+        <br><br>
+        Specifically, I'd pull:
+        <div class="inline-list">
+          <span class="inline-tag">cart_abandonment_rate by device</span>
+          <span class="inline-tag">payment_method success rate</span>
+          <span class="inline-tag">avg_order_value by product_category</span>
+          <span class="inline-tag">revenue by region × week</span>
+          <span class="inline-tag">repeat vs new customer mix</span>
+        </div>
+
+        That last one — repeat vs new — matters because if we're suddenly acquiring fewer repeat customers via email/organic and replacing them with new paid visitors, repeat buyers tend to have 2–3x the AOV of first-time buyers. That alone could swing AOV by 6%.
+
+        <div class="assumption-block">
+          <div>🔷</div>
+          <div><strong>Explicit assumption:</strong> I'm assuming the data has enough timestamp granularity to identify when in the checkout a session terminated. If we only have completed transactions, I can still see the AOV and mix story but not the funnel drop-off. I'd flag this data gap to the client early.</div>
+        </div>
+
+        My recommendation, given all of this: I'd start with the product category mix analysis because it requires the least data engineering and could resolve the AOV question in under an hour. Then move to device-level funnel analysis if the mix story doesn't explain it.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendation & Recovery Plan</div>
+      <div class="speech candidate-speech">
+        To close this out: regardless of which hypothesis wins, here's how I'd structure the recommendation to the client.
+        <div class="framework-grid cols-2" style="margin-top:12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Immediate (Week 1)</div>
+            <div class="fw-card-text">Run the segmentation analysis — device, region, product category. Pin the fault zone. If it's a checkout issue, escalate to engineering immediately. This stops the bleeding.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Short-Term (Weeks 2–4)</div>
+            <div class="fw-card-text">Fix the structural cause. Rebalance paid vs organic budget if traffic quality is the issue. Run A/B test on checkout if it's friction. Shift product merchandising if it's category mix.</div>
+          </div>
+          <div class="fw-card green">
+            <div class="fw-card-label">Ongoing Monitoring</div>
+            <div class="fw-card-text">Set up weekly alerts on AOV, conversion rate by device, and channel mix. Revenue at the total level is a lagging indicator — you want leading metrics that catch this in week one, not week 12.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches & Why They're Weaker</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Starting with the raw data before forming hypotheses</span></div>
+      <div class="alt-card-body">Some candidates open a dataset and start computing averages immediately. This produces outputs without direction — you'll find interesting facts but won't know if they're relevant to the problem. Always form hypotheses before querying.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge ok">Acceptable</span><span class="alt-card-title">Focusing solely on conversion rate</span></div>
+      <div class="alt-card-body">Not wrong, but incomplete. Revenue = volume × AOV. Fixing conversion without addressing AOV decline only solves half the problem. A complete answer covers both drivers simultaneously.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Cohort analysis — comparing the same customer segments over time</span></div>
+      <div class="alt-card-body">If you can identify returning customers vs new customers across the 90-day window, you can isolate whether the problem is acquisition quality (new customers buying less) or retention quality (existing customers coming back less). This is a more sophisticated cut that a great candidate might offer.</div>
+    </div>
+
+  </div><!-- end case 01 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 02 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q2">
+    <div class="case-header">
+      <div class="case-number">02</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--green)">Operations · Analytical</div>
+        <div class="case-title">The Overloaded Hospital Department</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-green">Process Stage Decomposition</span>
+          <span class="hero-pill pill-blue">Bottleneck Analysis</span>
+          <span class="hero-pill pill-gold">Supply vs Demand</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "A hospital outpatient department has wait times averaging 47 minutes above their target. You're given: patient ID, arrival time, check-in time, appointment time, appointment type, clinician ID, room ID, and discharge time. Two hours to find the root cause and recommendations. Walk me through your approach."
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Opening: Stage Decomposition</div>
+      <div class="speech candidate-speech">
+        The first thing I want to resist is treating "wait time" as a single number. 47 minutes above target is an outcome — the cause is hiding inside specific stages of the patient journey. So my starting point is to decompose the total visit time into stages using the columns I have.
+        <br><br>
+        From the data, I can construct this stage map:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Patient Journey Stages — derived from data columns</div>
+          <div class="logic-row">
+            <div class="logic-step-num">S1</div>
+            <div class="logic-step-content"><strong>Arrival → Check-in.</strong> <em>arrival_time to check_in_time. This is administrative queue time. If it's long, suspect understaffing at reception or a high walk-in rate overwhelming scheduled intake.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S2</div>
+            <div class="logic-step-content"><strong>Check-in → Appointment Start.</strong> <em>check_in_time to appointment_time. This is the waiting room phase — patients waiting to be called. Delays here suggest scheduling overload, late clinicians, or room unavailability.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S3</div>
+            <div class="logic-step-content"><strong>Appointment Start → Discharge.</strong> <em>appointment_time to discharge_time. This is the active care phase. Delays here could mean appointment types are running long relative to their scheduled slots, or specific clinicians are slower.</em></div>
+          </div>
+        </div>
+
+        Once I calculate the average and variance for each stage, I'll know <strong>which stage is absorbing most of the 47 extra minutes</strong>. High average duration = capacity problem. High variance = scheduling or complexity problem.
+      </div>
+    </div>
+
+    <div class="assumption-block">
+      <div>🔷</div>
+      <div><strong>Explicit assumption out loud:</strong> I'm assuming "appointment time" is when the patient is first seen by a clinician, not just when a room was assigned. If those are different events, stage S2 and S3 would need to be split further — but I'd flag that and work with what I have.</div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Does this stage breakdown match how the department actually operates, or is there a step in the flow I'm missing — like a triage stage or a pre-consultation intake?"</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        That's a reasonable breakdown. Let's say the data shows Stage 2 — check-in to appointment start — accounts for about 34 of the 47 extra minutes. Stage 3 is running slightly long too, but Stage 2 is the main story.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Drilling Into Stage 2</div>
+      <div class="speech candidate-speech">
+        Stage 2 being the bottleneck tells me we're dealing with a <strong>capacity or scheduling mismatch</strong> — patients are ready and checked in, but they can't be seen. Let me split this into demand-side and supply-side hypotheses.
+
+        <div class="framework-grid cols-2" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Demand-Side Hypotheses</div>
+            <div class="fw-card-text">
+              Volume is exceeding designed capacity:<br><br>
+              • Walk-in patients arriving unscheduled and absorbing appointment slots<br>
+              • Patient volume has grown but clinical capacity hasn't scaled<br>
+              • No-show patterns causing overbooking that then materializes
+            </div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Supply-Side Hypotheses</div>
+            <div class="fw-card-text">
+              Clinical or room capacity isn't available when needed:<br><br>
+              • Clinicians running late or starting sessions late<br>
+              • Rooms being held by patients finishing Stage 3 late, blocking intake<br>
+              • Specific appointment types booked incorrectly (short slots for long consults)
+            </div>
+          </div>
+        </div>
+
+        To distinguish these, I'd look at:
+        <div class="inline-list">
+          <span class="inline-tag">room_id utilization by hour</span>
+          <span class="inline-tag">clinician_id avg start latency</span>
+          <span class="inline-tag">appointment_type duration vs scheduled slot</span>
+          <span class="inline-tag">arrival pattern by hour of day</span>
+          <span class="inline-tag">stage 2 duration by day of week</span>
+        </div>
+
+        If I see that rooms are idle during peak Stage 2 wait time, it's a clinician problem. If rooms are occupied, it's a room turnover problem. If both are available but waits are long, it's a scheduling design problem — appointments are being packed in without buffer.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendations</div>
+      <div class="speech candidate-speech">
+        Let me give you a tiered set of recommendations, ordered by how quickly they can be implemented:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Recommendations — by implementation speed</div>
+          <div class="logic-row">
+            <div class="logic-step-num">R1</div>
+            <div class="logic-step-content"><strong>Schedule audit — this week.</strong> Pull the distribution of scheduled appointment durations vs actual (appointment_time to discharge_time). If specific appointment types are systematically running 15 minutes over their slots, you have a scheduling model problem that's compounding across the day. Fix the slot lengths.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">R2</div>
+            <div class="logic-step-content"><strong>Walk-in intake policy — this week.</strong> If walk-ins represent more than 15-20% of volume, they're likely causing scheduling cascade failures. Introduce a capped walk-in window (e.g., first 30 minutes of each hour) or a dedicated walk-in track.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">R3</div>
+            <div class="logic-step-content"><strong>Clinician start-time monitoring — within a month.</strong> If specific clinicians are systematically starting late, that's a management conversation, not a data conversation. But the data creates the business case. Build a simple per-clinician punctuality dashboard.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">R4</div>
+            <div class="logic-step-content"><strong>Dynamic room allocation — longer term.</strong> If room utilization data shows idle rooms during peak wait periods, there's a room assignment logic issue. A simple rules-based allocation system (assign next available room automatically at check-in completion) could reduce Stage 2 time structurally.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Before I wrap this up — are any of these recommendations already being tried, or is there a political constraint in the department I should factor into the prioritization? For example, if clinician monitoring is off the table, I'd lean harder into the scheduling model fix."</div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Recommending "add more staff" without identifying the bottleneck stage</span></div>
+      <div class="alt-card-body">Adding staff is expensive and often wrong. If the bottleneck is scheduling model design, more staff won't help — the schedule will still overpack the rooms. Identify the stage before prescribing the fix.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Simulation modeling — "what if" scenarios on schedule changes</span></div>
+      <div class="alt-card-body">A strong candidate might suggest building a simple discrete-event simulation using the historical data to model what happens to Stage 2 wait times if appointment slots are extended by 5, 10, or 15 minutes. This quantifies the impact of fixes before committing to them — exactly the kind of deployable analysis a top consulting firm would pitch.</div>
+    </div>
+
+  </div><!-- end case 02 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 03 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q3">
+    <div class="case-header">
+      <div class="case-number">03</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--red)">Product · Strategic</div>
+        <div class="case-title">The One-Week Taxi Intelligence System</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-red">Product Scoping</span>
+          <span class="hero-pill pill-gold">Constraint-Driven Design</span>
+          <span class="hero-pill pill-blue">Data Derivation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "You're handed 8,000 records of London taxi data: trip ID, fare amount, pickup location, dropoff location, pickup time, dropoff time, distance, driver ID. A client wants a deployable product in one week that makes their operations smarter. Walk me through how you'd scope, design, and prioritize the solution."
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Immediately Challenging the Brief</div>
+      <div class="speech candidate-speech">
+        I want to start by pushing back on "smarter" — not to be difficult, but because the word is doing a lot of work in this brief and the entire scope depends on what it actually means in practice.
+        <br><br>
+        There are at least four very different things this client could mean:
+        <div class="framework-grid cols-2" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Driver Intelligence</div>
+            <div class="fw-card-text">Help drivers find the next fare faster. Reduce idle time. Show where demand is clustering by time of day.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Fleet Intelligence</div>
+            <div class="fw-card-text">Help dispatchers allocate vehicles optimally. Reduce deadhead miles. Improve coverage of high-demand zones.</div>
+          </div>
+          <div class="fw-card green">
+            <div class="fw-card-label">Revenue Intelligence</div>
+            <div class="fw-card-text">Identify pricing anomalies. Find high-value routes being underserved. Understand fare efficiency by driver or route.</div>
+          </div>
+          <div class="fw-card red">
+            <div class="fw-card-label">Performance Intelligence</div>
+            <div class="fw-card-text">Score drivers on efficiency metrics. Identify outliers. Create accountability and coaching opportunities.</div>
+          </div>
+        </div>
+
+        Each of these is a different product with different outputs and different users. So before I touch the data — <strong>who is the end user of this system, and what decision do they make with it?</strong>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        Let's say the client is primarily a fleet manager. They want to understand driver efficiency and which routes or time slots are most and least profitable. They don't have any existing analytics tool.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — What the Data Can Actually Tell Us</div>
+      <div class="speech candidate-speech">
+        Perfect — now I can be specific. Let me map what I can derive from the 8 columns without needing any additional data:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Derivable Metrics — 8 columns → actionable signals</div>
+          <div class="logic-row">
+            <div class="logic-step-num">D1</div>
+            <div class="logic-step-content"><strong>Revenue per mile = fare ÷ distance.</strong> <em>Immediately surfaces high-value vs low-value routes. A trip to Heathrow might look big but earn £1.20/mile. A short City run might earn £3.40/mile. This is the fleet manager's core efficiency metric.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">D2</div>
+            <div class="logic-step-content"><strong>Trip duration = dropoff_time − pickup_time.</strong> <em>Divide fare by duration to get revenue per hour. Identify which time windows are most lucrative. A 9pm Friday may 2x daytime rates.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">D3</div>
+            <div class="logic-step-content"><strong>Driver efficiency score = driver's avg revenue/mile vs fleet average.</strong> <em>With driver_id, I can rank all drivers. Outliers — high and low — are immediately identifiable for coaching or best practice sharing.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">D4</div>
+            <div class="logic-step-content"><strong>Demand heatmap by pickup location × hour of day.</strong> <em>From pickup_location and pickup_time, I can build an 8×24 grid (or finer) of where and when trips originate. This tells the fleet manager where to position vehicles during each time window.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">D5</div>
+            <div class="logic-step-content"><strong>Fare anomaly detection.</strong> <em>Trips with similar distance/duration but very different fares. Could indicate pricing inconsistency, metering errors, or route choices worth investigating.</em></div>
+          </div>
+        </div>
+
+        <div class="assumption-block">
+          <div>🔷</div>
+          <div><strong>Explicit data assumptions I'm making:</strong> Location fields are either named zones or coordinates I can cluster — not free-text strings. If they're postcodes, I can still group them. If they're named landmarks, I'll need a lookup table. I'd validate this in hour one before committing to the heatmap feature.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — One-Week Scope</div>
+      <div class="speech candidate-speech">
+        Now the critical question: what can I actually build in a week? The one-week constraint forces a ruthless prioritization. My v1 scope would be:
+
+        <div class="framework-grid cols-2" style="margin-top: 12px;">
+          <div class="fw-card green">
+            <div class="fw-card-label">In Scope — Week 1</div>
+            <div class="fw-card-text">
+              ✓ Revenue/mile and revenue/hour by route cluster<br>
+              ✓ Driver efficiency leaderboard with fleet benchmarks<br>
+              ✓ Peak demand time windows by location zone<br>
+              ✓ Simple dashboard with 3-4 charts (Foundry native)<br>
+              ✓ Anomaly flag for trips that are fare outliers
+            </div>
+          </div>
+          <div class="fw-card red">
+            <div class="fw-card-label">Out of Scope — Phase 2</div>
+            <div class="fw-card-text">
+              ✗ Live/real-time tracking integration<br>
+              ✗ Predictive demand forecasting<br>
+              ✗ Dynamic pricing engine<br>
+              ✗ Route optimization algorithm<br>
+              ✗ Driver app integration
+            </div>
+          </div>
+        </div>
+
+        The v1 gives the fleet manager <strong>four actionable decisions they can make on Monday morning</strong>: which zones to position vehicles in, which drivers to coach, which time slots to target, and which routes to prioritize. That's a successful one-week product.
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Does this scope feel right given the one-week constraint? I've deliberately left out predictive features because those require model validation time we don't have. If the client is expecting a forecasting tool, I'd want to reset expectations now rather than in week three."</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — System Architecture (Non-Technical)</div>
+      <div class="speech candidate-speech">
+        Even without coding, I'd sketch three layers:
+        <div class="framework-grid cols-3" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Layer 1 — Data</div>
+            <div class="fw-card-text">Ingest the 8,000 records. Clean location fields. Derive D1-D5 metrics. Flag nulls and outliers. Deduplicate on trip_id. This is Day 1-2 work.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Layer 2 — Logic</div>
+            <div class="fw-card-text">Compute aggregated metrics: driver rankings, zone demand tables, hourly revenue profiles. These are table transforms — no ML required. Day 3-4.</div>
+          </div>
+          <div class="fw-card green">
+            <div class="fw-card-label">Layer 3 — Output</div>
+            <div class="fw-card-text">A dashboard with 4 views: zone heatmap, driver leaderboard, time-slot revenue curve, fare anomaly list. Day 5-7, including client walkthrough.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Proposing an ML model as the core output</span></div>
+      <div class="alt-card-body">8,000 records is not enough to train a robust predictive model, and the one-week timeline doesn't allow for validation cycles. Candidates who jump to "I'd build a demand prediction model" are proposing a product that can't be safely delivered.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge ok">Acceptable</span><span class="alt-card-title">API-first design</span></div>
+      <div class="alt-card-body">Some candidates will propose building a REST API that serves the derived metrics to a frontend. This is valid but over-engineered for week one — a dashboard is faster to build and more immediately useful to a fleet manager who doesn't have an existing tech team to consume an API.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Start with one single insight, made extremely actionable</span></div>
+      <div class="alt-card-body">A great candidate might argue: "Rather than four charts, I'd rather deliver one thing the fleet manager will definitely use — the demand heatmap — and make it exceptional. Then add the other views in week two based on what they actually found useful." This shows product maturity over feature-maximalism.</div>
+    </div>
+
+  </div><!-- end case 03 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 04 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q4">
+    <div class="case-header">
+      <div class="case-number">04</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--green)">Operations · Strategic</div>
+        <div class="case-title">The Warehouse That Can't Keep Up</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-green">Bottleneck Isolation</span>
+          <span class="hero-pill pill-blue">Temporal Analysis</span>
+          <span class="hero-pill pill-gold">Intervention Prioritization</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "On-time dispatch rates dropped from 94% to 78% over 6 months. No obvious cause. Data: order ID, order entry time, pick start time, pack start time, dispatch time, SKU count, picker ID, packer ID, dock door. Where do you begin?"
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — The 6-Month Timeline Is the First Clue</div>
+      <div class="speech candidate-speech">
+        The first thing that jumps out is the six-month window. A 16-percentage-point drop in dispatch performance over six months is <strong>not random variance — something structurally changed</strong>. So before I build any analysis, I want to find the inflection point: when exactly did the decline start? Was it a step change on a specific day, or a gradual drift?
+        <br><br>
+        I'd plot on-time dispatch rate by week for the full six months. The shape of the curve tells me a lot:
+        <div class="framework-grid cols-3" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Sudden Drop on Specific Date</div>
+            <div class="fw-card-text">Suggests a discrete event — a system change, policy shift, a key person leaving, or a new client adding complex orders suddenly.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Gradual Drift Downward</div>
+            <div class="fw-card-text">Suggests a structural load problem — volume growing without capacity scaling, or order complexity increasing incrementally (more SKUs per order).</div>
+          </div>
+          <div class="fw-card red">
+            <div class="fw-card-label">Step Down Then Plateau</div>
+            <div class="fw-card-text">Classic process change adoption problem — a new system was introduced, performance dropped, and the team never fully recovered. Think WMS upgrades or picking methodology changes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Stage Decomposition</div>
+      <div class="speech candidate-speech">
+        In parallel to the timeline analysis, I'd decompose the warehouse process using the data I have:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Process Stage Times — derived from timestamps</div>
+          <div class="logic-row">
+            <div class="logic-step-num">S1</div>
+            <div class="logic-step-content"><strong>Entry → Pick Start:</strong> queue time before picking begins. Long here = order backlog, insufficient pickers, or poor workload allocation.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S2</div>
+            <div class="logic-step-content"><strong>Pick Start → Pack Start:</strong> picking duration. Long here = complex orders (high SKU count), poor pick path, or picker performance variance.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S3</div>
+            <div class="logic-step-content"><strong>Pack Start → Dispatch:</strong> packing + dock allocation. Long here = packing complexity, dock door congestion, or carrier collection timing misalignment.</div>
+          </div>
+        </div>
+
+        I'd calculate mean and standard deviation of each stage, then look at how these have changed across the six-month window. <strong>The stage with the highest increase in variance is usually where the problem lives.</strong>
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Before I go deeper — has anything obvious changed operationally in the last six months that the ops team knows about? New WMS, new client, staff restructure? I want to make sure my analysis isn't re-discovering something already known."</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        The team thinks it might be related to a new large client they onboarded 5 months ago, but they haven't been able to confirm it. Let's say your stage analysis shows that Stage 2 — picking — has become significantly longer on average, and the variance has increased a lot.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Testing the New Client Hypothesis</div>
+      <div class="speech candidate-speech">
+        That really does point to the new client. Here's the logic: a new large client often brings either <strong>high SKU count orders</strong> (complex picks that take longer) or <strong>high volume concentration</strong> (large batches arriving at once, overwhelming picking capacity during specific windows).
+        <br><br>
+        I'd test this concretely by:
+        <div class="inline-list">
+          <span class="inline-tag">SKU count distribution — before and after month 5</span>
+          <span class="inline-tag">pick_duration by SKU_count quartile</span>
+          <span class="inline-tag">picker_id throughput by month</span>
+          <span class="inline-tag">order arrival time pattern — is there a volume spike?</span>
+          <span class="inline-tag">on-time rate segmented by order type or client</span>
+        </div>
+
+        My working hypothesis: <strong>the new client is sending orders with significantly more SKUs per order, which the picking process wasn't designed for</strong>. The old pick path design assumed, say, 3-4 SKUs per order. If the new client averages 12-15, pick times are 3-4x longer per order, and the whole flow backs up.
+
+        <div class="assumption-block">
+          <div>🔷</div>
+          <div><strong>Assumption flagged:</strong> I don't have a client ID field in the data. I'd need to either join a separate client/order table, or use order entry time patterns to infer which orders are likely from the new client (e.g., they may arrive in a consistent time window or have a different SKU count signature).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendations</div>
+      <div class="speech candidate-speech">
+        Assuming the new client / high SKU order hypothesis holds, I'd recommend three interventions:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Interventions — ordered by speed and impact</div>
+          <div class="logic-row">
+            <div class="logic-step-num">R1</div>
+            <div class="logic-step-content"><strong>Dedicated picking lane for high-SKU orders — this week.</strong> Separate complex orders (say, 8+ SKUs) into a dedicated pick stream with specialized pickers. This stops them from blocking the standard-flow queue and immediately protects dispatch rate for the other 80% of orders.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">R2</div>
+            <div class="logic-step-content"><strong>Slot time renegotiation with the new client — this month.</strong> If they're sending large orders with same-day dispatch expectations, their SLA may be commercially misaligned with the warehouse's capability. This is a business conversation enabled by the data — "here's what your order profile is doing to our dispatch rate."</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">R3</div>
+            <div class="logic-step-content"><strong>Pick path optimization for high-SKU orders — next quarter.</strong> A structural solution: re-engineer the pick path layout and sequence logic for orders above a SKU threshold. This requires WMS changes but is the permanent fix.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Recommending more staff without doing the stage analysis</span></div>
+      <div class="alt-card-body">If the problem is pick path design or order complexity, more staff running the same broken process just costs more money for marginal gains. Stage analysis must come before staffing decisions.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Dock door analysis as a secondary bottleneck</span></div>
+      <div class="alt-card-body">A strong candidate would also look at dock door utilization — if three dock doors are allocated to carrier A and carrier A collects at 4pm, but orders are ready at 2pm, there's a 2-hour idle buffer being wasted. Dock scheduling optimization can be a quick win even if it's not the primary cause.</div>
+    </div>
+
+  </div><!-- end case 04 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 05 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q5">
+    <div class="case-header">
+      <div class="case-number">05</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--red)">Product · Analytical · Strategic</div>
+        <div class="case-title">The Feature Nobody Uses</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-red">Product Strategy</span>
+          <span class="hero-pill pill-blue">Adoption Analysis</span>
+          <span class="hero-pill pill-gold">Kill vs Invest Decision</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "A SaaS company launched a collaboration feature 3 months ago. Expected 40% adoption in 90 days; actual is 9%. Leadership is debating kill vs invest. Data: user ID, company ID, account tier, days since signup, logins in last 30 days, feature used (Y/N), usage count. What do you recommend?"
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — First Move: Challenge the 40% Benchmark</div>
+      <div class="speech candidate-speech">
+        I want to start by questioning the benchmark, because the entire framing of this conversation rests on 40% being the right target. Where did that number come from?
+        <br><br>
+        If it came from user research — interviews with the target segment about intended behavior — then 9% is a meaningful signal that something is wrong. But if it was an aspirational number set by a product manager or executive without empirical grounding, then 9% might actually be completely normal for a collaboration feature in this category. B2B collaboration features typically see <strong>10-20% adoption in the first 90 days</strong> because they require multiple people in an organization to change behavior simultaneously, which is inherently slower than individual feature adoption.
+        <br><br>
+        So my first question is: <strong>how was 40% derived, and what's the comparable benchmark for similar features in this product category?</strong>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        Fair point. Let's say the 40% was internally set — it wasn't based on external benchmarks. The product team felt it was achievable. What does that change?
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Reframing the Question</div>
+      <div class="speech candidate-speech">
+        It changes the framing significantly. Now the question isn't "why did we miss 40%" — it's "is 9% actually a problem?" To answer that, I need to diagnose what type of failure this is, because <strong>there are three fundamentally different problems that all look like low adoption</strong>:
+
+        <div class="framework-grid cols-3" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Discovery Failure</div>
+            <div class="fw-card-text">Users never found the feature. It exists but isn't surfaced in the right moments in the product experience. Fix: onboarding, in-app prompts, email campaigns.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Value Failure</div>
+            <div class="fw-card-text">Users found it, tried it, and decided it wasn't worth using again. The feature doesn't solve a real problem or solves it worse than alternatives. Fix: redesign or kill.</div>
+          </div>
+          <div class="fw-card red">
+            <div class="fw-card-label">Fit Failure</div>
+            <div class="fw-card-text">The feature is actually good, but it was built for the wrong segment. Enterprise users might love it, SMB users may never need it. Fix: reposition, not rebuild.</div>
+          </div>
+        </div>
+
+        The kill vs invest decision is completely different for each of these. You don't kill a discovery failure — you fix the surface. You don't invest more in a value failure — you kill or fundamentally redesign. So I need to diagnose which type this is before I give any recommendation.
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Using the Data to Diagnose</div>
+      <div class="speech candidate-speech">
+        From the data I have, here's exactly how I'd distinguish the three failure types:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Diagnostic Tests — using the available columns</div>
+          <div class="logic-row">
+            <div class="logic-step-num">T1</div>
+            <div class="logic-step-content"><strong>Usage count among the 9% who adopted.</strong> <em>If the adopters used it 8, 12, 15 times — they love it. This is a discovery failure: the feature has real value, it just isn't reaching most users. If most used it once and stopped, it's a value failure.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">T2</div>
+            <div class="logic-step-content"><strong>Account tier of adopters vs non-adopters.</strong> <em>If adoption is 35% in enterprise accounts and 3% in SMB, this is a fit failure. The feature works exactly where it was supposed to — it just wasn't designed for the majority of your user base.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">T3</div>
+            <div class="logic-step-content"><strong>Logins in last 30 days for adopters vs non-adopters.</strong> <em>If non-adopters are highly active users with many logins, it's unlikely they never encountered the feature — which makes it a value or fit failure rather than discovery. If non-adopters are low-engagement users overall, the feature may just be hard to surface to people who aren't power users.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">T4</div>
+            <div class="logic-step-content"><strong>Days since signup for adopters.</strong> <em>If most adopters signed up recently and the feature was prominently featured in new user onboarding, that tells me the feature IS discoverable for new users — but existing users never got the same exposure. The fix is a re-engagement campaign, not a product change.</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "Based on these four tests — do you have any initial signal about which failure type is most likely? Even an informal impression from the product team would help me prioritize which test to run first."</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendation Framework</div>
+      <div class="speech candidate-speech">
+        My recommendation depends on what the tests show, but here's the decision tree I'd use:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Kill vs Invest Decision Framework</div>
+          <div class="logic-row">
+            <div class="logic-step-num">→</div>
+            <div class="logic-step-content"><strong>High repeat usage in the 9% → Invest in discovery.</strong> Don't touch the feature. Fix the surface: better onboarding tooltip, email campaign to non-adopters, in-app banner. Budget: low. Speed: fast.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">→</div>
+            <div class="logic-step-content"><strong>Adoption concentrated in enterprise only → Reposition.</strong> Change the product marketing, not the feature. Move it from "for everyone" to "for teams over 10 users." Set the right expectation about who it's for. Don't kill it and don't rebuild it.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">→</div>
+            <div class="logic-step-content"><strong>Low repeat usage, no segment concentration → Investigate value.</strong> Talk to the 9%. Why did they use it? Why did they stop? If the feedback is "it didn't solve my problem," you have a value failure. Then: kill or major redesign based on cost-benefit.</div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">→</div>
+            <div class="logic-step-content"><strong>No clear pattern → Don't make a permanent decision yet.</strong> Run a 30-day targeted campaign to a specific segment and measure response. Kill or invest based on that result, not on the ambiguous baseline.</div>
+          </div>
+        </div>
+
+        I would strongly advise leadership against making a kill decision without this diagnosis. Killing a discovery-failure feature is destroying value you already built. But investing more in a value-failure feature is burning money. The data makes this call — not intuition.
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Recommending kill or invest immediately without the diagnostic</span></div>
+      <div class="alt-card-body">Both decisions are binary and irreversible in their own way. Kill = sunk cost fully written off. Invest = more burn on potentially a wrong direction. Never make these calls without the failure type diagnosis.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Retention as the primary metric, not adoption</span></div>
+      <div class="alt-card-body">A sophisticated product thinker would reframe the entire question: "9% adoption is less important than the retention rate of that 9%. If those users are still active and using the feature 90 days later, you have a strong core. Most successful features start at 5-10% and grow through network effects and word of mouth." This reframe can completely change the recommendation.</div>
+    </div>
+
+  </div><!-- end case 05 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CASE 06 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="case-section" id="q6">
+    <div class="case-header">
+      <div class="case-number">06</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--gold)">Strategic · Operations · Product</div>
+        <div class="case-title">The Client Who Wants Everything</div>
+        <div class="case-tags">
+          <span class="hero-pill pill-gold">Scope Management</span>
+          <span class="hero-pill pill-green">Client Communication</span>
+          <span class="hero-pill pill-red">Trade-off Framing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-box">
+      "Three weeks into a consulting engagement. The client is an energy company. Original scope: procurement analytics dashboard. Now requesting: supplier risk scoring, invoice reconciliation automation, and vendor onboarding workflow — all within the original four-week timeline. Your technical lead says the original scope is already tight. How do you handle this?"
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — First Move: Understand the Why Behind Each Request</div>
+      <div class="speech candidate-speech">
+        My first instinct is not to say yes and not to say no. Both of those responses would be premature. I need to understand <strong>what's driving each of the four new requests</strong>, because scope creep in client engagements almost always has a signal buried in it.
+        <br><br>
+        There are usually three reasons a client expands scope mid-engagement:
+        <div class="framework-grid cols-3" style="margin-top: 12px;">
+          <div class="fw-card blue">
+            <div class="fw-card-label">Expanding Confidence</div>
+            <div class="fw-card-text">They see the work we're doing and now trust us with more. The relationship is accelerating faster than the contract. This is a growth opportunity, not a problem.</div>
+          </div>
+          <div class="fw-card gold">
+            <div class="fw-card-label">Shifting Priorities</div>
+            <div class="fw-card-text">An internal event (audit, board review, new VP) changed what matters. The original scope is now less urgent than new items. We need to understand what's really highest priority.</div>
+          </div>
+          <div class="fw-card red">
+            <div class="fw-card-label">Original Scope Was Wrong</div>
+            <div class="fw-card-text">The discovery wasn't thorough enough. We scoped the dashboard but didn't surface the reconciliation and vendor problems that are actually the bigger pain. This is partly on us.</div>
+          </div>
+        </div>
+
+        Before I do anything else, I'd have a 30-minute conversation with the client sponsor — not a big meeting, just a direct conversation — and ask: <strong>"Walk me through what's driving each of these requests. What happens if we don't deliver them?"</strong>
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label interviewer">Interviewer</div>
+      <div class="speech interviewer-speech">
+        Good. Let's say the client says their procurement director just got a new mandate from the CFO around supplier risk following a supply chain disruption. That's driving the risk scoring request urgently. The invoice reconciliation and onboarding requests are more opportunistic — "since you're here."
+      </div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Using Data to Structure the Trade-Off</div>
+      <div class="speech candidate-speech">
+        Now I have what I need to have a productive conversation. The supplier risk scoring is genuinely urgent — it has a direct business driver and a CFO mandate. The other two are opportunistic. That changes everything about how I respond.
+        <br><br>
+        Here's the trade-off framework I'd present to the client, using the data from our current engagement:
+
+        <div class="logic-tree" style="margin-top: 12px;">
+          <div class="logic-tree-head">Scope Trade-Off — presented transparently to the client</div>
+          <div class="logic-row">
+            <div class="logic-step-num">S1</div>
+            <div class="logic-step-content"><strong>Option A: Original scope only, delivered with full quality.</strong> <em>Procurement analytics dashboard live in week four as agreed. All four new items deferred to a Phase 2 proposal. Risk: client may feel we're not responsive to the CFO mandate.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S2</div>
+            <div class="logic-step-content"><strong>Option B: Swap dashboard for supplier risk scoring as the primary deliverable.</strong> <em>If supplier risk is now the CFO priority, we could deprioritize the dashboard and deliver a v1 risk scoring model instead. Dashboard becomes Phase 2. This only works if the original stakeholders agree to the swap.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S3</div>
+            <div class="logic-step-content"><strong>Option C: Scope both, but at reduced depth on each.</strong> <em>We deliver a dashboard plus a basic supplier risk tier (high/medium/low), but neither is as polished as the original scope promised. Risk: we deliver two mediocre things instead of one excellent thing. I'd advise against this unless the client explicitly accepts the quality trade-off in writing.</em></div>
+          </div>
+          <div class="logic-row">
+            <div class="logic-step-num">S4</div>
+            <div class="logic-step-content"><strong>Option D: Extend timeline or add resource.</strong> <em>If the CFO mandate is truly urgent and non-negotiable, we could explore a four-week extension or add a second analyst for two weeks. This requires budget authorization from the client.</em></div>
+          </div>
+        </div>
+
+        I would <strong>present all four options to the client with their trade-offs clearly stated</strong>, let them choose, and document the decision. My personal recommendation would be Option A or B — not Option C, because shipping two half-finished things is a worse outcome for the relationship than shipping one great thing.
+      </div>
+    </div>
+
+    <div class="assumption-block">
+      <div>🔷</div>
+      <div><strong>Explicit assumption:</strong> I'm assuming the invoice reconciliation and vendor onboarding requests are not connected to a regulatory or compliance deadline. If they are, they move up the urgency ranking immediately. I'd ask the client that directly before finalizing my recommendation.</div>
+    </div>
+
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Managing the Internal Team</div>
+      <div class="speech candidate-speech">
+        One dimension I haven't addressed yet: my technical lead. This isn't only a client conversation — it's also an internal one. I'd loop my technical lead in before the client meeting with three specific asks:
+        <br><br>
+        First, <strong>give me a concrete estimate</strong>: if we replaced the dashboard with supplier risk scoring, could we deliver a v1 in the same timeline? What's the delta in effort? I need real numbers, not a vague "it's tight."
+        <br><br>
+        Second, <strong>what's the minimum viable version</strong> of the risk scoring that would satisfy a CFO mandate? A full ML model? No. A supplier tier classification based on existing procurement data — volume, on-time delivery, contract age, geographic concentration? Probably yes, in a week.
+        <br><br>
+        Third, <strong>what breaks first if we over-scope?</strong> I want to know the team's honest failure mode — is it quality, timeline, or morale? That shapes how aggressive I am in protecting scope with the client.
+      </div>
+    </div>
+
+    <div class="checkin-moment">
+      <div class="checkin-icon">◎</div>
+      <div><strong>Check-in:</strong> "How does this feel as a response to the situation? I want to make sure I'm giving you the four-options framework rather than just one answer — because ultimately the right choice depends on the client relationship and commercial context that the account lead knows better than I do."</div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-section-label">Alternative Approaches</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Saying "yes" to protect the relationship, then failing on delivery</span></div>
+      <div class="alt-card-body">Over-promising and under-delivering is a far more damaging outcome for a professional services firm than a direct scoping conversation. In professional services, delivery quality is the reputation. One failed engagement causes more damage than one declined scope expansion.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge weak">Avoid</span><span class="alt-card-title">Escalating immediately to leadership without attempting to structure the conversation yourself</span></div>
+      <div class="alt-card-body">A senior BizOps candidate should be able to contain and structure this conversation. Immediately escalating signals a lack of ownership and confidence. Handle the options framing yourself, then loop in leadership if the client's answer involves contract changes or major commercial implications.</div>
+    </div>
+    <div class="alt-card">
+      <div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Use the existing procurement data to scope the risk scoring in real time</span></div>
+      <div class="alt-card-body">A great candidate would say: "I actually have procurement data in the engagement already. Let me sketch what a supplier risk tier model would look like using what we already have access to — volume per supplier, on-time delivery history, contract value, geographic origin. That might take two days, not two weeks, and I could propose it as a fast-follow within the current engagement." This shows product ownership and creative scoping, not just client management.</div>
+    </div>
+
+  </div><!-- end case 06 -->
+
+  <div class="case-divider"></div>
+
+  <!-- ═══ EXTENDED CASES HEADER ═══ -->
+  <div style="margin: 56px 56px 0; padding: 24px 32px; background: var(--bg2); border: 1px solid var(--border-bright); border-radius: 14px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);letter-spacing:-0.01em;flex-shrink:0;">Extended Case Bank</div>
+    <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">Six additional scenarios: energy, AI deployment failure, public sector, manufacturing, imperfect-data market entry, and delivery-specific scenarios from a consulting firm's perspective.</div>
+  </div>
+
+  <!-- CASE 07 -->
+  <div class="case-section" id="q7">
+    <div class="case-header">
+      <div class="case-number">07</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--green)">Operations · Analytical</div>
+        <div class="case-title">The Energy Grid Anomaly</div>
+        <div class="case-tags"><span class="hero-pill pill-green">Anomaly Characterization</span><span class="hero-pill pill-blue">Inflection Point Test</span><span class="hero-pill pill-gold">Recommend Under Uncertainty</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"A renewable energy operator has seen 14 unplanned outages in 6 months — up from 2. Sensor data: timestamp, turbine ID, output (kWh), wind speed, temperature, maintenance flag, operator ID. Two hours to find the pattern and recommend action."</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Opening: Characterize Before Hypothesizing</div>
+      <div class="speech candidate-speech">
+        Before any hypothesis, I need to understand the shape of these 14 outages — because the pattern itself is the first diagnostic signal.
+        <div class="framework-grid cols-2" style="margin-top:12px;">
+          <div class="fw-card blue"><div class="fw-card-label">Time clustering</div><div class="fw-card-text">Specific days/shifts → scheduling change or discrete event that started on a specific date.</div></div>
+          <div class="fw-card gold"><div class="fw-card-label">Equipment clustering</div><div class="fw-card-text">Same turbine IDs → hardware degradation, missed maintenance, or firmware update.</div></div>
+          <div class="fw-card green"><div class="fw-card-label">Condition clustering</div><div class="fw-card-text">Extreme wind or temperature → turbines being pushed past safe operating envelope.</div></div>
+          <div class="fw-card red"><div class="fw-card-label">Operator clustering</div><div class="fw-card-text">Same operator IDs → training gap, procedural deviation, recurring human error.</div></div>
+        </div>
+        In parallel: plot outages by week across 12 months. A sharp cliff on a specific date = discrete event. Gradual ramp = cumulative wear. The curve shape narrows the cause family before I touch segment data.
+        <div class="assumption-block"><div>🔷</div><div><strong>Assumption stated:</strong> "Prior period" is an equivalent-length window with comparable weather. I'd want to control for season before claiming a genuine 7x rate increase.</div></div>
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendation: Two Tracks in Parallel</div>
+      <div class="speech candidate-speech">
+        I don't wait for full root cause before acting on safety-critical infrastructure. <strong>Immediately:</strong> if 3 turbines account for 10+ outages, take those offline for inspection now. <strong>This week:</strong> run the clustering analysis across all four dimensions — machine, material/environmental, operator, time. <strong>Ongoing:</strong> build a Foundry monitoring dashboard that flags any turbine with output variance &gt;30% vs its 30-day rolling baseline — so the next cluster is caught in real time, not discovered after 14 outages.
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Check-in:</strong> "Does the ops team have a working theory? And what's the safety threshold for proactive offline — I want my recommendation to be operationally feasible, not just analytically correct."</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Survivorship analysis on maintenance_flag</span></div><div class="alt-card-body">If recently maintained turbines are failing at higher rates, suspect faulty maintenance procedure or bad parts batch — counterintuitive but common in industrial settings. The maintenance_flag being a positive predictor of failure is an immediately escalatable finding that a great candidate would surface.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- CASE 08 -->
+  <div class="case-section" id="q8">
+    <div class="case-header">
+      <div class="case-number">08</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--red)">Product · Analytical · Strategic</div>
+        <div class="case-title">The AI Deployment That Isn't Working</div>
+        <div class="case-tags"><span class="hero-pill pill-red">Model vs Deployment Failure</span><span class="hero-pill pill-blue">Distribution Shift</span><span class="hero-pill pill-gold">AI Risk Management</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"A financial services client deployed an AI loan underwriting model 3 months ago. Approval rates are similar but default rates are 40% higher. Data: application ID, approval decision (AI vs override), applicant features (anonymized), loan amount, 90-day payment status. What happened and what do you do?"</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Separate Two Failure Types First</div>
+      <div class="speech candidate-speech">
+        40% higher defaults is an active financial crisis. My first move is to separate two failure types because the fix is entirely different for each:
+        <div class="framework-grid cols-2" style="margin-top:12px;">
+          <div class="fw-card red"><div class="fw-card-label">Model failure</div><div class="fw-card-text">The model's predictions are wrong — it's approving loans it shouldn't. Root: training data issues, wrong features, stale model applied to a changed population.</div></div>
+          <div class="fw-card gold"><div class="fw-card-label">Deployment failure</div><div class="fw-card-text">The model is technically correct but deployed at wrong threshold, to wrong population, or applied in the wrong context.</div></div>
+        </div>
+        The most valuable column: <strong>approval decision (AI vs override)</strong> — a natural control group. If AI-approved loans are defaulting at elevated rates and human-override loans are performing normally, the model is the problem. If both cohorts are defaulting at similar elevated rates, the applicant population has changed — update the prior, not the model.
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Distribution Shift + Tiered Recommendation</div>
+      <div class="speech candidate-speech">
+        Regardless of the override comparison, I run a parallel <strong>distribution shift check</strong>: compare applicant feature distributions between pre-deployment and the 3-month cohort. If income, employment type, or debt profiles shifted significantly, the model is extrapolating outside its valid range — and will appear accurate on internal metrics while causing real-world harm.
+        <br><br>
+        <strong>Today:</strong> Tighten the approval threshold (from 0.5 to 0.35) to reduce new bad approvals without requiring a full rollback. <strong>This week:</strong> complete the AI vs override analysis and distribution shift check — hours, not days. <strong>This month:</strong> implement ongoing model monitoring — default rate by approval cohort, weekly, automated alert at 15%+ above baseline.
+        <div class="assumption-block"><div>🔷</div><div><strong>Assumption:</strong> We have access to training data distributions for comparison. If the model was built by a third party and training data is unavailable, I'd proxy this by comparing pre- vs post-deployment applicant features within the current dataset.</div></div>
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Check-in:</strong> "Is there regulatory exposure here? AI underwriting with disparate impact creates compliance risk beyond financial loss — that changes the urgency significantly and who needs to be in this conversation."</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Loan amount analysis</span></div><div class="alt-card-body">If the AI is approving larger loans than human underwriters would (higher confidence → higher loan amounts) and larger loans are defaulting at higher rates, the model may be systematically miscalibrated on loan size — a financially impactful error that doesn't surface from accuracy metrics alone.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- CASE 09 -->
+  <div class="case-section" id="q9">
+    <div class="case-header">
+      <div class="case-number">09</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--green)">Operations · Product</div>
+        <div class="case-title">The City Emergency Response Problem</div>
+        <div class="case-tags"><span class="hero-pill pill-green">Multi-stage Decomposition</span><span class="hero-pill pill-blue">Geographic Segmentation</span><span class="hero-pill pill-gold">Public Sector Constraints</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"A metropolitan government wants to reduce ambulance response times, currently 11.4 minutes against a 9-minute target. Data: incident ID, call timestamp, dispatch timestamp, arrival timestamp, incident type, location zone, unit ID, unit base location. Where do you start and what would you build?"</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Stage Decomposition + Geographic Segmentation</div>
+      <div class="speech candidate-speech">
+        11.4 minutes is a composite. From the timestamps I can derive two stages immediately:
+        <div class="logic-tree" style="margin-top:12px;">
+          <div class="logic-tree-head">Response time decomposition</div>
+          <div class="logic-row"><div class="logic-step-num">S1</div><div class="logic-step-content"><strong>Call → Dispatch.</strong> Call-handling and triage time. Fix lives in staffing or protocol. Least controllable in the short term.</div></div>
+          <div class="logic-row"><div class="logic-step-num">S2</div><div class="logic-step-content"><strong>Dispatch → Arrival.</strong> Travel time — the most controllable variable. Fix: reposition units, not add them. Zero-cost lever that gets tested before recommending new vehicles.</div></div>
+        </div>
+        City-wide averages hide enormous variation. I'd build a zone × time-of-day matrix for travel time — immediately surfaces chronically underserved zones and peak hours with coverage gaps. Core hypothesis: <strong>units are positioned where they were historically based, not where demand now clusters.</strong> City demographics shift. Ambulance bases set 15 years ago may simply be in the wrong places.
+        <br><br>
+        One thing I raise proactively without being asked: this is a government engagement with union contracts and EMS leadership. The technically optimal repositioning may not be the politically implementable one — I'd ask about those constraints before finalizing any recommendation.
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Product Scope (Foundry Framing)</div>
+      <div class="speech candidate-speech">
+        <strong>V1 (week 1–2):</strong> Historical demand heatmap by zone × hour, current unit positioning overlaid, gap visualization. Immediately actionable by the dispatch chief with zero system integration. <strong>V2 (weeks 3–6):</strong> Real-time positioning dashboard with coverage alerts. <strong>V3 (month 2+):</strong> Predictive demand model using event calendars and weather data. V1 gives the government something to act on within two weeks — that's what makes this a successful consulting engagement.
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Check-in:</strong> "Are there union or contractual constraints on unit repositioning? And is the success metric average response time, or worst-decile? Because in emergency services, a system averaging 9 minutes with 10% of responses at 18+ minutes is still critically failing patients."</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Worst-decile analysis instead of average</span></div><div class="alt-card-body">Reframe the success metric entirely. A system averaging 9 minutes but with 10% of responses at 18+ minutes is failing critically ill patients. "What's the 90th percentile response time and where is it concentrated?" is a more clinically meaningful cut — and a finding that would immediately elevate the urgency of the engagement with the government stakeholder.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- CASE 10 -->
+  <div class="case-section" id="q10">
+    <div class="case-header">
+      <div class="case-number">10</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--green)">Operations · Analytical</div>
+        <div class="case-title">The Manufacturing Yield Problem</div>
+        <div class="case-tags"><span class="hero-pill pill-green">4M Framework</span><span class="hero-pill pill-blue">Pareto Concentration</span><span class="hero-pill pill-gold">Containment vs Root Cause</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"Quality yield dropped from 94% to 81% over 8 weeks. Data per component: component ID, production line, shift, machine ID, operator ID, material batch ID, temperature log, pass/fail QC. One week to find the cause."</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — 4M Lens + Pareto First</div>
+      <div class="speech candidate-speech">
+        Manufacturing quality problems trace to four families — and this dataset covers all four:
+        <div class="framework-grid cols-2" style="margin-top:12px;">
+          <div class="fw-card blue"><div class="fw-card-label">Machine</div><div class="fw-card-text">machine_id failure rate + temperature_log variance against spec</div></div>
+          <div class="fw-card gold"><div class="fw-card-label">Material</div><div class="fw-card-text">material_batch_id failure correlation — traceable to one supplier?</div></div>
+          <div class="fw-card green"><div class="fw-card-label">Man</div><div class="fw-card-text">operator_id × shift failure rate — training or experience gap?</div></div>
+          <div class="fw-card red"><div class="fw-card-label">Method / Environment</div><div class="fw-card-text">production_line × shift × temperature — drift or process change?</div></div>
+        </div>
+        I run all four in parallel. But before any causal story: Pareto concentration check. Which single machine, batch, operator, or shift appears in a disproportionate share of failures? If one machine accounts for 9 of the 13 percentage-point drop, I've solved 70% of the problem before touching anything else.
+        <div class="assumption-block"><div>🔷</div><div><strong>Assumption flagged:</strong> QC result is binary and consistently applied. If operators have discretion over what gets QC'd, the failure rate data may reflect inspection rigor as much as actual defect rate.</div></div>
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Timeline Analysis + Two-Track Recommendation</div>
+      <div class="speech candidate-speech">
+        Plot failure rate by week across the 8-week window. Sharp drop on specific date = discrete event (find it in the change log). Gradual ramp = cumulative wear. The shape directs the investigation before I run a single analysis.
+        <br><br>
+        Two tracks simultaneously: <strong>Containment today</strong> — increase QC to 100% on the highest-failure line, quarantine batches with elevated failure correlation. <strong>Root cause this week</strong> — Pareto across all four dimensions, temperature log standard deviation correlation first (process temperature variance is the most sensitive leading indicator in precision manufacturing). <strong>Ongoing</strong> — real-time yield dashboard: any stream dropping below 90% triggers automatic flag, replacing the weekly summary report that surfaces a 5-day-old problem.
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Check-in:</strong> "Does the plant manager have a working theory? And are there batches currently in production from the same supplier as the failure period — if so, I'd recommend an immediate QC hold on those while the analysis runs."</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Temperature log standard deviation as the leading indicator</span></div><div class="alt-card-body">Process temperature variance — not just average — is the most sensitive quality indicator in precision manufacturing. Cross the standard deviation of temperature_log against failure rate by production run. Tight temperature control = lower failure rate is a near-universal relationship. If temperature variance increased 8 weeks ago, that's likely the causal bridge regardless of which 4M dimension triggered it.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- CASE 11 -->
+  <div class="case-section" id="q11">
+    <div class="case-header">
+      <div class="case-number">11</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--gold)">Strategic · Analytical</div>
+        <div class="case-title">The New Market Entry With Bad Data</div>
+        <div class="case-tags"><span class="hero-pill pill-gold">Data Fitness Assessment</span><span class="hero-pill pill-blue">Market Entry Logic</span><span class="hero-pill pill-green">Sequenced Expansion</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"A healthcare client wants to expand telehealth into three new states. Existing data: patient ID, state, visit type, duration, diagnosis code, payer type, net revenue per visit. Data is 18 months old and incomplete in one state. Should they expand?"</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Question the Data Before Using It</div>
+      <div class="speech candidate-speech">
+        My first move: interrogate data fitness before building any model. 18-month-old healthcare data carries three specific staleness risks:
+        <div class="framework-grid cols-3" style="margin-top:12px;">
+          <div class="fw-card red"><div class="fw-card-label">Payer mix shift</div><div class="fw-card-text">Insurance reimbursement rates for telehealth have changed. Self-pay vs insurance ratios may not reflect today's market.</div></div>
+          <div class="fw-card gold"><div class="fw-card-label">Regulatory change</div><div class="fw-card-text">Telehealth licensure rules vary by state and have shifted significantly in 18 months.</div></div>
+          <div class="fw-card blue"><div class="fw-card-label">Competitive entry</div><div class="fw-card-text">18 months is enough for new competitors to enter target states and change pricing dynamics entirely.</div></div>
+        </div>
+        Opening question: <strong>"Why are we working with 18-month-old data — is current data unavailable, or just not extracted?"</strong> If the latter, pause and get better data first. The data can tell us unit economics (visit type × payer type margins). It can't tell us whether new state populations match this profile or what competitive dynamics look like locally.
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Recommendation: Sequenced Entry</div>
+      <div class="speech candidate-speech">
+        Sequenced entry, not simultaneous. Enter the state where data is cleanest and population most resembles existing markets — treat it as a live test with explicit success criteria for months 1–3. Use those real in-market results to calibrate states 2 and 3, rather than committing all three on stale proxy data.
+        <br><br>
+        The single variable that breaks this recommendation: <strong>self-pay proportion in new states.</strong> If it's significantly higher than existing markets, our entire margin model is wrong from day one. That's the one data point I'd validate before any entry commitment.
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Check-in:</strong> "Is there a board commitment or capital raise forcing simultaneous entry into all three states? If there's a forcing function, I need to build explicit uncertainty ranges into the revenue projection rather than a point estimate."</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Use the incomplete-data state as a diagnostic</span></div><div class="alt-card-body">Incomplete data from a state similar to a target market may be the most relevant signal about how expansion into that type of market performs. Ask why it's incomplete — lower adoption, operational problems, or data collection failures all tell a different story about what entry risk actually looks like there.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- CASE 12 -->
+  <div class="case-section" id="q12">
+    <div class="case-header">
+      <div class="case-number">12</div>
+      <div class="case-header-right">
+        <div class="case-eyebrow" style="color:var(--red)">Product · Strategic · Operations</div>
+        <div class="case-title">The Internal Tool Nobody Adopted</div>
+        <div class="case-tags"><span class="hero-pill pill-red">Product vs Change Mgmt Failure</span><span class="hero-pill pill-gold">Client Recovery</span><span class="hero-pill pill-green">Ownership Under Pressure</span></div>
+      </div>
+    </div>
+    <div class="prompt-box">"Your firm deployed a dashboard for a manufacturing client's procurement team 6 weeks ago. Expected 80% weekly active users in 30 days. Actual: 9 of 45, mostly senior analysts. Usage logs: user ID, department, seniority level, login count, features accessed, session duration. The client is asking if this is a failure. How do you respond?"</div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — Don't Accept the Binary Framing</div>
+      <div class="speech candidate-speech">
+        "Is this a failure?" is a binary I want to resist before answering. Three things to examine first:
+        <div class="logic-tree" style="margin-top:12px;">
+          <div class="logic-tree-head">Before answering the failure question</div>
+          <div class="logic-row"><div class="logic-step-num">1</div><div class="logic-step-content"><strong>Was 80%/30 days contractual or internal aspiration?</strong> If agreed in the SOW, it's a defined miss requiring a recovery plan. If it was an internal target set without client agreement, it's a planning error — not a delivery failure.</div></div>
+          <div class="logic-row"><div class="logic-step-num">2</div><div class="logic-step-content"><strong>Is usage quality strong among the 9?</strong> Long sessions + all features accessed + repeat logins = the product works. The problem is reach, not value. These are completely different fixes.</div></div>
+          <div class="logic-row"><div class="logic-step-num">3</div><div class="logic-step-content"><strong>Is 6 weeks a fair window?</strong> B2B enterprise tool adoption typically takes 8–12 weeks. The question itself may be premature.</div></div>
+        </div>
+        Given that adopters are senior analysts with high session depth, my working diagnosis: <strong>fit failure</strong> — the dashboard was built for power users and has no on-ramp for procurement coordinators (70% of the team). This is a change management and design gap, not a product failure.
+      </div>
+    </div>
+    <div class="candidate-block">
+      <div class="speaker-label candidate">Candidate — The Client Response + Recovery Plan</div>
+      <div class="speech candidate-speech">
+        How I'd frame the conversation — not as a defense, not as a concession:
+        <br><br>
+        <em>"What the usage data shows is that your senior analyst team has adopted the tool strongly — their session depth and feature usage is exactly what we hoped to see. The gap is reach across the broader team, and that's on us to solve. Here's our plan for the next 30 days."</em>
+        <br><br>
+        <strong>Weeks 1–2:</strong> Role-specific training — procurement coordinators get a 45-minute session showing exactly the two screens that affect their daily job. Not a generic demo. <strong>Weeks 2–3:</strong> Simplified entry view with 3 key metrics for casual users, no configuration required. <strong>Week 4:</strong> Re-measure WAU by seniority and department, share report with client.
+        <br><br>
+        The close: <strong>"Our job isn't done at deployment. It's done when your team is getting value. We're not done yet."</strong>
+      </div>
+    </div>
+    <div class="checkin-moment"><div class="checkin-icon">◎</div><div><strong>Internal check-in before the client meeting:</strong> "I want to loop in my manager — not to escalate, but to confirm the sprint capacity we can commit to in the recovery plan before I promise it to the client." This models the ownership + collaboration balance a strong candidate should demonstrate.</div></div>
+    <div class="sub-section"><div class="sub-section-label">Strongest Alternative</div></div>
+    <div class="alt-card"><div class="alt-card-head"><span class="alt-badge strong">Strong Alternative</span><span class="alt-card-title">Interview the non-adopters directly</span></div><div class="alt-card-body">Usage logs tell you what happened — not why. Spending 2–3 hours talking to 5–6 non-adopters surfaces blockers that no log can reveal: "I never got training," "it's too complex," "I don't see how it helps my job." Each answer points to a different fix, and qualitative data gets you there faster than another week of usage analysis.</div></div>
+  </div>
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- RECURRING THEMES -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="themes-section" id="themes">
+    <div class="themes-title">Recurring Themes & Transferable Frameworks</div>
+    <div class="themes-subtitle">
+      Six cases, one mental model — and twelve cases, twelve variations. Every decomposition question in this type of interview tests some combination of these patterns. Master these and you can walk into any scenario cold.
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">1. Decompose Before Diagnosing</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q1</span>
+          <span class="theme-q-badge">Q2</span>
+          <span class="theme-q-badge">Q4</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        The single most consistent pattern across all six cases: <strong>never form hypotheses on the aggregate metric</strong>. Revenue is down → decompose into volume × AOV. Wait time is up → decompose into S1, S2, S3 stage times. Dispatch rate fell → decompose into entry→pick→pack→dispatch. 
+        <br><br>
+        The decomposition tells you <em>where the problem lives</em>. Without it, any hypothesis is a guess. With it, hypotheses are constrained by the data and far more likely to be right.
+        <div class="mantra">Framework: Metric → Components → Fault Component → Hypotheses → Tests</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">2. Challenge the Premise Before Accepting It</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q3</span>
+          <span class="theme-q-badge">Q5</span>
+          <span class="theme-q-badge">Q6</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        In Q3, "smarter operations" needed to be unpacked into a specific user and decision. In Q5, the 40% adoption benchmark needed to be questioned. In Q6, "add more scope" needed to be traced back to the underlying business driver. 
+        <br><br>
+        <strong>Accepting the brief at face value is the most common mistake.</strong> Great candidates spend 60-90 seconds reframing the question before touching any data. This isn't stalling — it's the highest-value thing you can do in a decomposition interview because it proves you won't solve the wrong problem elegantly.
+        <div class="mantra">Question to ask yourself: "What assumption is baked into this prompt that I should surface?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">3. Supply vs Demand as a Universal Split</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q2</span>
+          <span class="theme-q-badge">Q4</span>
+          <span class="theme-q-badge">Q6</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        Almost every operational problem can be split into: <em>is this a demand problem (more is coming in than expected) or a supply problem (less capacity to handle it than before)?</em> 
+        <br><br>
+        Hospital waits: demand spike (more patients) vs supply drop (fewer available clinicians/rooms). Warehouse delays: demand increase (new high-SKU client) vs supply constraint (picking process not designed for complexity). Scope creep: demand expansion (client confidence growing) vs supply constraint (team at capacity). 
+        <br><br>
+        This split immediately narrows your hypotheses in half and points to completely different interventions.
+        <div class="mantra">Always ask: "Did demand increase, did supply decrease, or did both shift simultaneously?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">4. The Inflection Point Test</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q1</span>
+          <span class="theme-q-badge">Q4</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        When a metric has degraded over time, <strong>the shape of the degradation curve is itself a diagnostic signal</strong>. A sudden cliff drop on a specific date points to a discrete event (a technical change, a policy shift, a person leaving). A gradual drift points to a structural load problem (volume creeping up, complexity slowly increasing). A step-down-then-plateau suggests a process change whose effects were never fully recovered.
+        <br><br>
+        This applies to any time-series problem: customer churn rates, revenue trends, NPS scores, SLA breach rates. Always plot the metric over time before doing any segment analysis — the curve shape gives you the answer to "what changed?" before you even look at the data.
+        <div class="mantra">Plot the trend first. The curve shape is a hypothesis generator, not just a visualization.</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">5. Constraint-Driven Scoping</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q3</span>
+          <span class="theme-q-badge">Q6</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        In consulting engagements, the constraint is almost always time — one week, four weeks, a client engagement window. Strong candidates internalize this and <strong>scope to the constraint from the start</strong>, rather than proposing an ideal solution and then reluctantly paring it back.
+        <br><br>
+        The discipline of "what's the minimum useful output within the constraint?" produces better client outcomes than "here's what we could build if we had unlimited time." A focused, excellent v1 builds more trust than an overscoped mediocre v1.
+        <div class="mantra">Lead with the constraint: "Given one week, here's what I'd prioritize and here's what I'd explicitly defer."</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">6. Make Assumptions Explicit and Early</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q1</span>
+          <span class="theme-q-badge">Q2</span>
+          <span class="theme-q-badge">Q3</span>
+          <span class="theme-q-badge">Q4</span>
+          <span class="theme-q-badge">Q5</span>
+          <span class="theme-q-badge">Q6</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        Every case required assumptions — about data granularity, about what fields mean, about who the end user is, about what the benchmark was based on. The difference between a strong and a weak candidate is not whether they make assumptions (everyone does) — it's whether they <strong>surface them out loud and invite correction</strong>.
+        <br><br>
+        Making an assumption explicit does three things: it shows you know what you don't know, it gives the interviewer a chance to redirect you before you waste time on a wrong path, and it demonstrates intellectual honesty — a core trait this type of interview explicitly evaluates.
+        <div class="mantra">For every assumption you make, say it out loud: "I'm assuming X — is that valid, or should I account for Y?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">7. Check In Strategically, Not Constantly</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q1</span>
+          <span class="theme-q-badge">Q2</span>
+          <span class="theme-q-badge">Q3</span>
+          <span class="theme-q-badge">Q4</span>
+          <span class="theme-q-badge">Q5</span>
+          <span class="theme-q-badge">Q6</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        There are three moments in every case where a check-in creates maximum value: <em>after the initial decomposition</em> (confirm you've framed the problem correctly), <em>after forming hypotheses</em> (confirm you're not missing a known driver), and <em>before committing to a final recommendation</em> (confirm there are no constraints that would invalidate your answer). 
+        <br><br>
+        Checking in more often than this signals anxiety or lack of direction. Checking in less often signals arrogance or poor client management. The right cadence shows you're confident enough to drive but humble enough to course-correct.
+        <div class="mantra">Three check-in moments: after decomposition, after hypotheses, before recommendation.</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">8. Characterize Before You Hypothesize</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q7</span>
+          <span class="theme-q-badge">Q10</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        For anomaly and quality cases, the pattern of the problem is itself a diagnostic signal. Before forming any hypothesis about <em>why</em> something is happening, spend 60 seconds asking <em>where</em> it is happening — which machines, which zones, which shifts, which batches. Concentration analysis before causal reasoning is the discipline that separates analysts from guessers.
+        <div class="mantra">Find where the failures cluster before building any story about why they happen.</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">9. Separate Model Failure From Deployment Failure</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q8</span>
+          <span class="theme-q-badge">Q12</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        Any time an AI system or deployed tool is underperforming, the first question is: is the underlying product broken, or is the way it was deployed broken? These are completely different fixes. A model with wrong predictions needs retraining or rollback. A correctly-performing model deployed to the wrong population, at the wrong threshold, or without change management, needs a deployment fix — not a product fix. Conflating these is the most expensive mistake in technology delivery.
+        <div class="mantra">Ask: "Is the thing broken, or is the way we're using the thing broken?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">10. Assess Data Fitness Before Using It</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q11</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        When you're handed data to inform a decision, the first question is never "what does this data say?" — it's "is this data reliable enough to base this decision on?" Age, completeness, source, and context all affect fitness. 18-month-old healthcare data in a fast-changing regulatory environment may be worse than no data at all if it creates false confidence. A strong candidate challenges data fitness <em>before</em> building any model on it.
+        <div class="mantra">Before modeling: "Is this data fit for this decision, or are we building precision on a shaky foundation?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">11. Containment and Root Cause Run in Parallel</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q7</span>
+          <span class="theme-q-badge">Q8</span>
+          <span class="theme-q-badge">Q10</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        On safety-critical or financially impactful cases, never wait for complete root cause analysis before taking any action. "We need more data" is not an acceptable answer when turbines are failing, loans are defaulting at 40% higher rates, or components are shipping at 81% yield. The professional move is to run an immediate containment action — tighten a threshold, quarantine a batch, increase inspection frequency — while root cause work runs in parallel.
+        <div class="mantra">Ask: "What can I do today to limit harm, before I know exactly what caused it?"</div>
+      </div>
+    </div>
+
+    <div class="theme-item">
+      <div>
+        <div class="theme-name">12. Own the Outcome, Not Just the Delivery</div>
+        <div class="theme-applies">
+          <span class="theme-q-badge">Q6</span>
+          <span class="theme-q-badge">Q12</span>
+        </div>
+      </div>
+      <div class="theme-body">
+        This type of interview explicitly evaluates ownership — and Q12 tests it directly. When a tool you deployed isn't getting adopted, the weak response is to defend the delivery ("we built what was scoped") or concede failure ("we're sorry"). The strong response is to own the gap and immediately present a recovery plan. Deployment is not the finish line. Value realization is the finish line. This mindset — "my job isn't done until the client is getting value" — is the single most important signal this interview is looking for.
+        <div class="mantra">"Our job isn't done at deployment. It's done when your team is getting value."</div>
+      </div>
+    </div>
+
+  </div><!-- end themes -->
+
+</div><!-- end main -->
+
+<script>
+  // Active nav tracking
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

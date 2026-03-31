@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northslope Case Coach</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0C0D10;
+  --bg1:      #111318;
+  --bg2:      #171B24;
+  --bg3:      #1E2330;
+  --bg4:      #252D3E;
+  --line:     rgba(255,255,255,0.07);
+  --line2:    rgba(255,255,255,0.12);
+  --text:     #E9EBF0;
+  --muted:    #8A93A8;
+  --faint:    #4A5068;
+  --accent:   #4F80FF;
+  --accent2:  #7B9FFF;
+  --accent-bg: rgba(79,128,255,0.1);
+  --accent-bdr: rgba(79,128,255,0.25);
+  --gold:     #E8B84B;
+  --gold-bg:  rgba(232,184,75,0.08);
+  --gold-bdr: rgba(232,184,75,0.25);
+  --green:    #3ECF8E;
+  --green-bg: rgba(62,207,142,0.08);
+  --green-bdr:rgba(62,207,142,0.25);
+  --red:      #F06B6B;
+  --red-bg:   rgba(240,107,107,0.08);
+  --red-bdr:  rgba(240,107,107,0.25);
+  --purple:   #A78BFA;
+  --purple-bg:rgba(167,139,250,0.08);
+  --purple-bdr:rgba(167,139,250,0.25);
+  --teal:     #38D9C0;
+  --teal-bg:  rgba(56,217,192,0.07);
+  --teal-bdr: rgba(56,217,192,0.2);
+  --r:        10px;
+  --r2:       14px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--bg1);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-top {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.logo-diamond {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  flex-shrink: 0;
+}
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.logo-sub {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.phase-nav { padding: 16px 0; flex: 1; }
+.phase-nav-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 0 20px 10px;
+}
+.phase-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: left;
+  transition: all 0.15s;
+  position: relative;
+}
+.phase-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.phase-btn.active { color: var(--accent2); background: var(--accent-bg); }
+.phase-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent);
+}
+.phase-btn.done { color: var(--green); }
+.phase-btn.done .phase-icon { background: var(--green-bg); color: var(--green); border-color: var(--green-bdr); }
+.phase-icon {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  color: var(--faint);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.phase-btn.active .phase-icon { background: var(--accent-bg); color: var(--accent); border-color: var(--accent-bdr); }
+
+.sidebar-bottom {
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+}
+.progress-label {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.progress-bar {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.reset-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 8px;
+  background: none;
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  color: var(--muted);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.reset-btn:hover { border-color: var(--red-bdr); color: var(--red); background: var(--red-bg); }
+
+/* ── MAIN ── */
+.main { display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; }
+
+/* ── TOP BAR ── */
+.topbar {
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar-phase {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.topbar-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.topbar-right { display: flex; gap: 8px; align-items: center; }
+.phase-pill {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ── CONTENT AREA ── */
+.content-area {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  max-width: 860px;
+  width: 100%;
+}
+
+/* ── PHASE PANELS ── */
+.phase-panel { display: none; animation: fadeIn 0.25s ease; }
+.phase-panel.visible { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── FORM ELEMENTS ── */
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+textarea, input[type="text"], select {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13.5px;
+  padding: 12px 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+}
+textarea:focus, input[type="text"]:focus, select:focus {
+  border-color: var(--accent-bdr);
+  box-shadow: 0 0 0 3px rgba(79,128,255,0.08);
+}
+textarea::placeholder, input::placeholder { color: var(--faint); }
+select { cursor: pointer; appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234A5068'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+option { background: var(--bg2); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: var(--r);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #6090FF; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,128,255,0.3); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-ghost { background: var(--bg3); color: var(--muted); border: 1px solid var(--line2); }
+.btn-ghost:hover { color: var(--text); background: var(--bg4); }
+.btn-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bdr); }
+.btn-green:hover { background: rgba(62,207,142,0.15); }
+.btn-gold { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-bdr); }
+.btn-gold:hover { background: rgba(232,184,75,0.15); }
+.btn-sm { padding: 7px 13px; font-size: 12px; }
+.btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+
+/* ── AI RESPONSE AREA ── */
+.ai-bubble {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--r2) var(--r2) 0;
+  padding: 20px 22px;
+  margin: 16px 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--text);
+  position: relative;
+}
+.ai-bubble.gold-border { border-left-color: var(--gold); }
+.ai-bubble.green-border { border-left-color: var(--green); }
+.ai-bubble.red-border { border-left-color: var(--red); }
+.ai-bubble.purple-border { border-left-color: var(--purple); }
+.ai-bubble.teal-border { border-left-color: var(--teal); }
+
+.ai-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ai-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.ai-label.thinking .dot { background: var(--gold); animation: pulse 0.8s infinite; }
+
+.ai-content { white-space: pre-wrap; }
+.ai-content strong { color: var(--text); font-weight: 600; }
+
+/* streaming cursor */
+.cursor-blink::after {
+  content: '▊';
+  color: var(--accent);
+  animation: blink 0.7s infinite;
+  font-size: 12px;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── FRAMEWORK CHIPS ── */
+.chip-grid { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.chip {
+  font-size: 11px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  border: 1px solid;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.chip.blue  { color: var(--accent2); background: var(--accent-bg);  border-color: var(--accent-bdr); }
+.chip.gold  { color: var(--gold);    background: var(--gold-bg);    border-color: var(--gold-bdr); }
+.chip.green { color: var(--green);   background: var(--green-bg);   border-color: var(--green-bdr); }
+.chip.teal  { color: var(--teal);    background: var(--teal-bg);    border-color: var(--teal-bdr); }
+.chip.purple{ color: var(--purple);  background: var(--purple-bg);  border-color: var(--purple-bdr); }
+.chip:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.chip.selected { filter: brightness(1.3); box-shadow: 0 0 0 2px currentColor; }
+
+/* ── THINK ALOUD AREA ── */
+.think-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.think-col-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.think-col-label.blue  { color: var(--accent2); }
+.think-col-label.gold  { color: var(--gold); }
+.think-col-label.green { color: var(--green); }
+.think-col-label.red   { color: var(--red); }
+
+/* ── SCORE CARD ── */
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.score-card {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 14px;
+  text-align: center;
+}
+.score-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.score-card-label { font-size: 10px; color: var(--muted); }
+
+/* ── CHECKIN MOMENT ── */
+.checkin-bar {
+  background: var(--gold-bg);
+  border: 1px solid var(--gold-bdr);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  color: var(--gold);
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+/* ── INLINE NOTES ── */
+.note-box {
+  background: var(--teal-bg);
+  border: 1px solid var(--teal-bdr);
+  border-radius: var(--r);
+  padding: 11px 14px;
+  font-size: 12px;
+  color: var(--teal);
+  margin: 8px 0;
+  line-height: 1.55;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 20px 0;
+}
+
+/* ── PHASE 0: INPUT ── */
+#phase-input .big-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+#phase-input .sub-label {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.data-tag-area { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.data-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.data-tag.active { background: var(--accent-bg); border-color: var(--accent-bdr); color: var(--accent2); }
+.data-tag:hover { border-color: var(--line2); color: var(--text); }
+
+/* ── FRAMEWORK CHECKLIST ── */
+.check-list { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--bg3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.check-item:hover { border-color: var(--line2); background: var(--bg4); }
+.check-item.checked { border-color: var(--green-bdr); background: var(--green-bg); }
+.check-box {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--faint);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-top: 1px;
+}
+.check-item.checked .check-box {
+  background: var(--green);
+  border-color: var(--green);
+  color: #000;
+}
+.check-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.check-item.checked .check-text { color: var(--text); }
+
+/* ── HYPOTHESIS BUILDER ── */
+.hypothesis-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+  margin-bottom: 10px;
+}
+.hyp-input {
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px;
+  padding: 10px 13px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+.hyp-input:focus { border-color: var(--accent-bdr); }
+.del-btn {
+  width: 32px; height: 38px;
+  background: var(--red-bg);
+  border: 1px solid var(--red-bdr);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.del-btn:hover { background: rgba(240,107,107,0.2); }
+
+/* ── ASSUMPTION TAG ── */
+.assumption-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--teal-bg);
+  border: 1px solid var(--teal-bdr);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--teal);
+  margin: 3px;
+  cursor: pointer;
+}
+.assumption-tag .remove { opacity: 0.6; font-size: 14px; line-height: 1; }
+.assumption-tag:hover .remove { opacity: 1; }
+
+/* ── SEGMENT MATRIX ── */
+.seg-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+.seg-cell {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.seg-cell:hover { border-color: var(--line2); color: var(--text); }
+.seg-cell.picked { background: var(--accent-bg); border-color: var(--accent-bdr); color: var(--accent2); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--faint);
+}
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.empty-text { font-size: 13px; line-height: 1.6; }
+
+/* ── SPINNER ── */
+.spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; }
+  .content-area { padding: 20px; max-width: 100%; }
+  .score-grid { grid-template-columns: repeat(2,1fr); }
+  .think-row { grid-template-columns: 1fr; }
+  .seg-matrix { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo-mark">
+      <div class="logo-diamond"></div>
+      <div>
+        <div class="logo-text">Case Coach</div>
+        <div class="logo-sub">Northslope · Decomposition</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="phase-nav">
+    <div class="phase-nav-label">Phases</div>
+    <button class="phase-btn active" onclick="goToPhase(0)" id="nav-0">
+      <span class="phase-icon">0</span> Case Setup
+    </button>
+    <button class="phase-btn" onclick="goToPhase(1)" id="nav-1">
+      <span class="phase-icon">1</span> Reframe the Brief
+    </button>
+    <button class="phase-btn" onclick="goToPhase(2)" id="nav-2">
+      <span class="phase-icon">2</span> Decompose
+    </button>
+    <button class="phase-btn" onclick="goToPhase(3)" id="nav-3">
+      <span class="phase-icon">3</span> Hypotheses
+    </button>
+    <button class="phase-btn" onclick="goToPhase(4)" id="nav-4">
+      <span class="phase-icon">4</span> Data Strategy
+    </button>
+    <button class="phase-btn" onclick="goToPhase(5)" id="nav-5">
+      <span class="phase-icon">5</span> Check-in Moment
+    </button>
+    <button class="phase-btn" onclick="goToPhase(6)" id="nav-6">
+      <span class="phase-icon">6</span> Recommendation
+    </button>
+    <button class="phase-btn" onclick="goToPhase(7)" id="nav-7">
+      <span class="phase-icon">★</span> Debrief & Score
+    </button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <button class="reset-btn" onclick="resetAll()">↺ Start New Case</button>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════
+     MAIN
+══════════════════════════════════════ -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-phase" id="topbar-title">Case Setup</div>
+      <div class="topbar-hint" id="topbar-hint">Enter your case prompt to begin</div>
+    </div>
+    <div class="topbar-right">
+      <span class="phase-pill" id="phase-badge" style="background:var(--accent-bg);color:var(--accent2);border:1px solid var(--accent-bdr)">Phase 0 of 7</span>
+      <div id="api-key-wrap" style="display:flex;align-items:center;gap:8px;margin-left:12px;">
+        <input id="api-key-input" type="password"
+          placeholder="Paste Anthropic API key (sk-ant-...)"
+          style="font-size:0.78rem;padding:0.35rem 0.7rem;border-radius:5px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:inherit;width:240px;outline:none;"
+          oninput="saveCoachKey(this.value)"
+        />
+        <span id="api-key-status" style="font-size:0.72rem;color:#7ec8a0;display:none;">✓ saved</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- ══ PHASE 0: CASE SETUP ══ -->
+    <div class="phase-panel visible" id="phase-input">
+      <div class="big-label">What's your case?</div>
+      <div class="sub-label">Paste in the case prompt — anything from a one-liner to a full scenario. The coach will guide you through each phase of the decomposition framework.</div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--accent)"></div>Case Prompt</div>
+        <label>Paste the full case scenario below</label>
+        <textarea id="case-input" rows="7" placeholder="Example: A mid-size UK retailer's online revenue dropped 18% over 90 days. Traffic is flat, catalog unchanged, marketing spend is up. You have transaction-level data: timestamp, product ID, customer ID, order value, payment method, device type, region. Where do you start?"></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--gold)"></div>Available Data Columns</div>
+        <label>Click to tag the data fields mentioned in the case (or type them)</label>
+        <div class="chip-grid" id="data-chips">
+          <span class="chip blue" onclick="toggleDataChip(this)">timestamp</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">user_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">order_value</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">product_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">device_type</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">region</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">payment_method</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">customer_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">arrival_time</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">clinician_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">room_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">fare_amount</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">driver_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">distance</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">picker_id</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">dispatch_time</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">sku_count</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">account_tier</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">logins_30d</span>
+          <span class="chip blue" onclick="toggleDataChip(this)">usage_count</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">turbine_id</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">output_kwh</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">wind_speed</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">temperature</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">maintenance_flag</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">operator_id</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">approval_decision</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">default_status</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">loan_amount</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">incident_type</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">location_zone</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">unit_base_location</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">machine_id</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">material_batch_id</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">temperature_log</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">qc_result</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">payer_type</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">diagnosis_code</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">net_revenue_per_visit</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">seniority_level</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">features_accessed</span>
+          <span class="chip teal" onclick="toggleDataChip(this)">session_duration</span>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px;">
+          <input type="text" id="custom-col-input" placeholder="Add custom column..." style="flex:1" onkeydown="if(event.key==='Enter')addCustomCol()">
+          <button class="btn btn-ghost btn-sm" onclick="addCustomCol()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--green)"></div>Case Type</div>
+        <label>What kind of problem is this?</label>
+        <select id="case-type">
+          <option value="">— Select type —</option>
+          <option value="revenue">Revenue / Financial Performance</option>
+          <option value="operations">Operational Efficiency / Process</option>
+          <option value="product">Product Adoption / Feature Strategy</option>
+          <option value="scope">Client / Stakeholder Management</option>
+          <option value="data">Data Product / System Design</option>
+          <option value="ai">AI Deployment / Model Failure</option>
+          <option value="anomaly">Anomaly Detection / Safety Critical</option>
+          <option value="quality">Manufacturing / Quality Control</option>
+          <option value="market">Market Entry / Strategic Decision</option>
+          <option value="public">Public Sector / Multi-Stakeholder</option>
+          <option value="mixed">Mixed / Unclear</option>
+        </select>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startCase()">
+          <span>Begin Case</span> <span>→</span>
+        </button>
+        <span style="font-size:12px;color:var(--faint)">AI will guide each phase</span>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 1: REFRAME ══ -->
+    <div class="phase-panel" id="phase-1">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--gold)"></div>Phase 1 — Reframe the Brief</div>
+        <div class="note-box">🔑 Before touching any data, challenge what the prompt is actually asking. Strong candidates spend 60–90 seconds here.</div>
+
+        <div id="ai-reframe-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+        <label>What hidden assumptions are baked into this brief?</label>
+        <textarea id="reframe-assumptions" rows="3" placeholder="e.g. 'Revenue is assumed to be a single metric — but it could be volume × AOV. Traffic being flat doesn't mean traffic quality is flat...'"></textarea>
+
+        <div style="margin-top:14px;">
+          <label>What clarifying questions would you ask the client first?</label>
+          <div id="reframe-questions-list"></div>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <input type="text" id="rq-input" placeholder="Type a clarifying question..." onkeydown="if(event.key==='Enter')addReframeQ()">
+            <button class="btn btn-ghost btn-sm" onclick="addReframeQ()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-reframe-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitReframe()">Get AI Feedback → Phase 2</button>
+        <button class="btn btn-ghost" onclick="goToPhase(0)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 2: DECOMPOSE ══ -->
+    <div class="phase-panel" id="phase-2">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--accent)"></div>Phase 2 — Decompose the Problem</div>
+        <div class="note-box">🔑 Break the top-level metric or problem into its component parts. Never diagnose the aggregate — find which component is failing.</div>
+
+        <div id="ai-decompose-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+        <label>What are the key stages or components of this problem?</label>
+        <div id="decomp-stages"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" id="stage-input" placeholder="e.g. 'Stage 1: Arrival → Check-in (admin queue time)'" onkeydown="if(event.key==='Enter')addStage()">
+          <button class="btn btn-ghost btn-sm" onclick="addStage()">+ Add Stage</button>
+        </div>
+
+        <div style="margin-top:16px;">
+          <label>Which segment dimensions should you cut across?</label>
+          <div class="seg-matrix" id="seg-matrix">
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By time period</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By user segment</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By geography</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By product / SKU</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By channel</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By device type</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By individual (person)</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By order complexity</div>
+            <div class="seg-cell" onclick="this.classList.toggle('picked')">By account tier</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-decompose-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitDecompose()">Get AI Feedback → Phase 3</button>
+        <button class="btn btn-ghost" onclick="goToPhase(1)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 3: HYPOTHESES ══ -->
+    <div class="phase-panel" id="phase-3">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--purple)"></div>Phase 3 — Build Hypotheses</div>
+        <div class="note-box">🔑 For each component you've identified, generate a ranked list of falsifiable hypotheses. Each must be testable with the data you have.</div>
+
+        <div id="ai-hyp-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+        <label>Your hypotheses (ranked — most likely first)</label>
+        <div id="hyp-list"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addHypothesis()" style="margin-top:8px;">+ Add Hypothesis</button>
+
+        <div style="margin-top:16px;">
+          <label>What type of failure is this? (select all that apply)</label>
+          <div class="chip-grid">
+            <span class="chip gold" id="ftype-demand" onclick="toggleChipId('ftype-demand')">Demand increase</span>
+            <span class="chip gold" id="ftype-supply" onclick="toggleChipId('ftype-supply')">Supply / capacity drop</span>
+            <span class="chip blue" id="ftype-discovery" onclick="toggleChipId('ftype-discovery')">Discovery failure</span>
+            <span class="chip blue" id="ftype-value" onclick="toggleChipId('ftype-value')">Value failure</span>
+            <span class="chip teal" id="ftype-fit" onclick="toggleChipId('ftype-fit')">Segment fit mismatch</span>
+            <span class="chip purple" id="ftype-process" onclick="toggleChipId('ftype-process')">Process / design fault</span>
+            <span class="chip green" id="ftype-external" onclick="toggleChipId('ftype-external')">External event</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-hyp-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitHypotheses()">Get AI Feedback → Phase 4</button>
+        <button class="btn btn-ghost" onclick="goToPhase(2)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 4: DATA STRATEGY ══ -->
+    <div class="phase-panel" id="phase-4">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--teal)"></div>Phase 4 — Data Strategy</div>
+        <div class="note-box">🔑 For each hypothesis, name the specific metric or query that confirms or kills it. Don't just collect data — decide what each data point proves.</div>
+
+        <div id="ai-data-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+        <label>What metrics or queries would you derive from the available data?</label>
+        <textarea id="data-strategy-text" rows="5" placeholder="e.g. '1. Revenue per mile = fare ÷ distance → surfaces high vs low value routes&#10;2. Cart abandonment rate by device type → tests H2 (mobile checkout friction)&#10;3. Stage 2 duration by time of day → identifies peak bottleneck windows'"></textarea>
+
+        <div style="margin-top:14px;">
+          <label>What data gaps exist? What are you assuming about data quality?</label>
+          <div id="assumption-tags"></div>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <input type="text" id="assumption-input" placeholder="e.g. 'Assuming location fields are coordinates, not free text'" onkeydown="if(event.key==='Enter')addAssumption()">
+            <button class="btn btn-ghost btn-sm" onclick="addAssumption()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-data-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitDataStrategy()">Get AI Feedback → Phase 5</button>
+        <button class="btn btn-ghost" onclick="goToPhase(3)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 5: CHECK-IN ══ -->
+    <div class="phase-panel" id="phase-5">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--gold)"></div>Phase 5 — Check-in Moment</div>
+        <div class="note-box">🔑 Check in with the interviewer 2–3 times per case. This is moment 2 (after hypotheses). Show confidence, invite course-correction, protect from wrong paths.</div>
+
+        <div id="ai-checkin-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+        <label>Write your check-in statement to the interviewer</label>
+        <textarea id="checkin-text" rows="4" placeholder="e.g. 'Before I commit to this direction — does this breakdown resonate with what the business is experiencing, or is there a driver I haven't surfaced yet? I want to make sure I'm not running in the wrong direction before I go deep on the data analysis.'"></textarea>
+
+        <div style="margin-top:14px;">
+          <label>What new information would change your current hypothesis ranking?</label>
+          <textarea id="checkin-pivot" rows="3" placeholder="e.g. 'If the interviewer tells me the drop is confined to mobile → confirms H2 (checkout friction) and I deprioritize H3 immediately.'"></textarea>
+        </div>
+      </div>
+
+      <div id="ai-checkin-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitCheckin()">Get AI Feedback → Phase 6</button>
+        <button class="btn btn-ghost" onclick="goToPhase(4)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 6: RECOMMENDATION ══ -->
+    <div class="phase-panel" id="phase-6">
+      <div class="card">
+        <div class="card-title"><div class="card-title-dot" style="background:var(--green)"></div>Phase 6 — Recommendation</div>
+        <div class="note-box">🔑 End with a decision, not just analysis. Tier your recommendations by speed of implementation. Name what you'd monitor going forward.</div>
+
+        <div id="ai-rec-prompt" style="margin:16px 0;"></div>
+
+        <div class="divider"></div>
+
+        <div class="think-row">
+          <div>
+            <div class="think-col-label green">Immediate Actions (this week)</div>
+            <textarea id="rec-immediate" rows="4" placeholder="What can be done in days to stop the bleeding or test the primary hypothesis?"></textarea>
+          </div>
+          <div>
+            <div class="think-col-label gold">Short-term Fixes (2–4 weeks)</div>
+            <textarea id="rec-shortterm" rows="4" placeholder="What structural changes address the root cause?"></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label>Ongoing monitoring — what metrics would you track?</label>
+          <textarea id="rec-monitoring" rows="3" placeholder="e.g. 'Weekly: Stage 2 duration by appointment type, clinician start-time compliance, walk-in volume ratio'"></textarea>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label>Your final recommendation in one sentence</label>
+          <input type="text" id="rec-oneliner" placeholder="e.g. 'Fix the mobile checkout flow first — it's the highest-leverage change, and it's testable within 48 hours.'">
+        </div>
+      </div>
+
+      <div id="ai-rec-feedback"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitRecommendation()">Get Final Score & Debrief →</button>
+        <button class="btn btn-ghost" onclick="goToPhase(5)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 7: DEBRIEF ══ -->
+    <div class="phase-panel" id="phase-7">
+      <div id="debrief-content">
+        <div class="empty-state">
+          <div class="empty-icon">⧗</div>
+          <div class="empty-text">Complete Phase 6 to generate your full debrief and scores.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- content-area -->
+</main>
+</div><!-- shell -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const state = {
+  apiKey: localStorage.getItem('cc_api_key') || '',
+  caseText: '',
+  caseType: '',
+  dataColumns: [],
+  reframeAssumptions: '',
+  reframeQuestions: [],
+  stages: [],
+  hypotheses: [],
+  failureTypes: [],
+  dataStrategy: '',
+  assumptions: [],
+  checkinText: '',
+  checkinPivot: '',
+  recImmediate: '',
+  recShortterm: '',
+  recMonitoring: '',
+  recOneliner: '',
+  phaseDone: [false,false,false,false,false,false,false,false],
+  currentPhase: 0,
+  aiHistory: []
+};
+
+function saveCoachKey(val) {
+  if (val.startsWith('sk-ant-') || val.startsWith('sk-')) {
+    state.apiKey = val;
+    localStorage.setItem('cc_api_key', val);
+    const s = document.getElementById('api-key-status');
+    if (s) { s.style.display = 'inline'; setTimeout(() => { s.style.display = 'none'; }, 2000); }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const saved = localStorage.getItem('cc_api_key');
+  if (saved) {
+    state.apiKey = saved;
+    const inp = document.getElementById('api-key-input');
+    if (inp) inp.value = saved;
+  }
+});
+
+const PHASE_META = [
+  { title: 'Case Setup',       hint: 'Enter your case prompt to begin' },
+  { title: 'Reframe the Brief',hint: 'Challenge what the prompt assumes before touching data' },
+  { title: 'Decompose',        hint: 'Break the problem into measurable stages and segments' },
+  { title: 'Hypotheses',       hint: 'Build ranked, falsifiable hypotheses from your decomposition' },
+  { title: 'Data Strategy',    hint: 'Name the exact query or metric that tests each hypothesis' },
+  { title: 'Check-in Moment',  hint: 'Practice the interviewer check-in with confidence' },
+  { title: 'Recommendation',   hint: 'Commit to a tiered, actionable recommendation' },
+  { title: 'Debrief & Score',  hint: 'AI-powered scoring across all 7 Northslope dimensions' }
+];
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+function goToPhase(n) {
+  document.querySelectorAll('.phase-panel').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.phase-btn').forEach((b,i) => b.classList.toggle('active', i === n));
+  const panel = document.getElementById(n === 0 ? 'phase-input' : 'phase-' + n);
+  if (panel) panel.classList.add('visible');
+  state.currentPhase = n;
+  document.getElementById('topbar-title').textContent = PHASE_META[n].title;
+  document.getElementById('topbar-hint').textContent  = PHASE_META[n].hint;
+  document.getElementById('phase-badge').textContent  = `Phase ${n} of 7`;
+  updateProgress();
+  window.scrollTo(0,0);
+}
+
+function updateProgress() {
+  const done = state.phaseDone.filter(Boolean).length;
+  const pct  = Math.round((done / 7) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+  state.phaseDone.forEach((d, i) => {
+    const btn = document.getElementById('nav-' + i);
+    if (btn) { btn.classList.toggle('done', d && i > 0); }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// TOGGLE HELPERS
+// ═══════════════════════════════════════════════════════
+function toggleDataChip(el) { el.classList.toggle('selected'); syncDataCols(); }
+function toggleChipId(id) {
+  document.getElementById(id)?.classList.toggle('selected');
+}
+function syncDataCols() {
+  state.dataColumns = [...document.querySelectorAll('#data-chips .chip.selected')].map(c => c.textContent.trim());
+}
+function addCustomCol() {
+  const inp = document.getElementById('custom-col-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  const chip = document.createElement('span');
+  chip.className = 'chip teal';
+  chip.textContent = val;
+  chip.onclick = () => toggleDataChip(chip);
+  document.getElementById('data-chips').appendChild(chip);
+  inp.value = '';
+  syncDataCols();
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE 1 – REFRAME
+// ═══════════════════════════════════════════════════════
+function addReframeQ() {
+  const inp = document.getElementById('rq-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.reframeQuestions.push(val);
+  renderReframeQs();
+  inp.value = '';
+}
+function renderReframeQs() {
+  const el = document.getElementById('reframe-questions-list');
+  el.innerHTML = state.reframeQuestions.map((q,i) => `
+    <div class="hypothesis-row">
+      <div class="hyp-input" style="padding:10px 13px;">${q}</div>
+      <button class="del-btn" onclick="state.reframeQuestions.splice(${i},1);renderReframeQs()">×</button>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE 2 – DECOMPOSE
+// ═══════════════════════════════════════════════════════
+function addStage() {
+  const inp = document.getElementById('stage-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.stages.push(val);
+  renderStages();
+  inp.value = '';
+}
+function renderStages() {
+  const el = document.getElementById('decomp-stages');
+  el.innerHTML = state.stages.map((s,i) => `
+    <div class="hypothesis-row">
+      <div class="hyp-input" style="padding:10px 13px;"><strong style="color:var(--accent2);font-family:'Syne',sans-serif;font-size:11px;">S${i+1}</strong> &nbsp;${s}</div>
+      <button class="del-btn" onclick="state.stages.splice(${i},1);renderStages()">×</button>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE 3 – HYPOTHESES
+// ═══════════════════════════════════════════════════════
+function addHypothesis() {
+  state.hypotheses.push('');
+  renderHypotheses();
+}
+function renderHypotheses() {
+  const el = document.getElementById('hyp-list');
+  el.innerHTML = state.hypotheses.map((h,i) => `
+    <div class="hypothesis-row">
+      <div style="position:relative;flex:1">
+        <span style="position:absolute;top:10px;left:12px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent2);pointer-events:none">H${i+1}</span>
+        <input type="text" class="hyp-input" style="padding-left:36px;" value="${h.replace(/"/g,'&quot;')}" placeholder="State the hypothesis — must be falsifiable with your data" oninput="state.hypotheses[${i}]=this.value">
+      </div>
+      <button class="del-btn" onclick="state.hypotheses.splice(${i},1);renderHypotheses()">×</button>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE 4 – ASSUMPTIONS
+// ═══════════════════════════════════════════════════════
+function addAssumption() {
+  const inp = document.getElementById('assumption-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.assumptions.push(val);
+  renderAssumptions();
+  inp.value = '';
+}
+function renderAssumptions() {
+  const el = document.getElementById('assumption-tags');
+  el.innerHTML = state.assumptions.map((a,i) => `
+    <span class="assumption-tag" onclick="state.assumptions.splice(${i},1);renderAssumptions()">
+      ${a} <span class="remove">×</span>
+    </span>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// API CALL HELPER (streaming)
+// ═══════════════════════════════════════════════════════
+async function callClaude(prompt, targetEl, borderClass = '') {
+  targetEl.innerHTML = `
+    <div class="ai-bubble ${borderClass}">
+      <div class="ai-label thinking"><span class="dot"></span>AI Coach is thinking...</div>
+      <div class="ai-content" id="stream-content"></div>
+    </div>`;
+  const contentEl = targetEl.querySelector('#stream-content');
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        stream: true,
+        system: `You are an expert case interview coach for Northslope Technologies, a Palantir Foundry consulting firm. You help candidates practice decomposition interviews for the Senior Business Operations & Strategy role.
+
+Your coaching is based on these key frameworks:
+1. DECOMPOSE BEFORE DIAGNOSING: Break metrics into components (e.g. revenue = volume × AOV) before forming hypotheses
+2. CHALLENGE THE PREMISE: Question briefs before accepting them
+3. SUPPLY vs DEMAND: Split operational problems into demand-increase vs supply-decrease hypotheses
+4. INFLECTION POINT TEST: Look for when/how the metric changed as a diagnostic signal
+5. CONSTRAINT-DRIVEN SCOPING: Always scope to the time/resource constraint from the start
+6. EXPLICIT ASSUMPTIONS: Surface data quality assumptions early
+7. STRATEGIC CHECK-INS: 2-3 check-ins per case — after decomposition, after hypotheses, before recommendation
+8. CHARACTERIZE BEFORE HYPOTHESIZING: For anomaly/quality cases, find where failures cluster before building any causal story
+9. MODEL vs DEPLOYMENT FAILURE: For AI cases, separate whether the model is wrong vs whether it was deployed wrongly
+10. DATA FITNESS ASSESSMENT: Question whether data is reliable enough for the decision before building any model on it
+11. CONTAINMENT + ROOT CAUSE IN PARALLEL: On safety-critical or high-impact cases, recommend interim containment while root cause analysis runs
+12. OWN THE OUTCOME: Frame recommendations as ongoing ownership, not point-in-time delivery
+
+Evaluate:
+- Smart signals: empirical thinking, breaking complex problems into components, creativity, evidence-based reasoning
+- Win signals: ownership of the recommendation, client-focus, driving the conversation, commitment to a specific answer
+
+Format your feedback as plain text. Be direct, specific, and concise. Max 200 words. Use markdown bold for key points. Start with what was strong, then what could be sharpened. Always end with one specific coaching tip for the next phase.`,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!resp.ok) throw new Error(await resp.text());
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    contentEl.classList.add('cursor-blink');
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.type === 'content_block_delta' && data.delta?.text) {
+              fullText += data.delta.text;
+              contentEl.innerHTML = formatAIText(fullText);
+            }
+          } catch(e) {}
+        }
+      }
+    }
+
+    contentEl.classList.remove('cursor-blink');
+    targetEl.querySelector('.ai-label').innerHTML = '<span style="color:var(--accent2);font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">AI Coach Feedback</span>';
+    return fullText;
+
+  } catch(e) {
+    targetEl.innerHTML = `<div class="ai-bubble red-border"><div class="ai-label" style="color:var(--red)">Error</div><div class="ai-content">${e.message || 'Failed to connect to AI. Please try again.'}</div></div>`;
+    return '';
+  }
+}
+
+function formatAIText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE SUBMIT HANDLERS
+// ═══════════════════════════════════════════════════════
+
+function startCase() {
+  const caseText = document.getElementById('case-input').value.trim();
+  const caseType = document.getElementById('case-type').value;
+  if (!caseText) { alert('Please enter the case prompt first.'); return; }
+  syncDataCols();
+  state.caseText = caseText;
+  state.caseType = caseType;
+  state.phaseDone[0] = true;
+
+  // Prime Phase 1 with context
+  const reframeEl = document.getElementById('ai-reframe-prompt');
+  reframeEl.innerHTML = `<div class="ai-bubble gold-border"><div class="ai-label" style="color:var(--gold)">Case Loaded</div><div class="ai-content"><strong>Your case:</strong><br><em>${caseText.substring(0,280)}${caseText.length>280?'...':''}</em><br><br>Now: <strong>challenge the brief</strong>. What assumptions are baked into the way this problem is framed? What clarifying questions would you ask before touching the data?</div></div>`;
+
+  goToPhase(1);
+}
+
+async function submitReframe() {
+  state.reframeAssumptions = document.getElementById('reframe-assumptions').value.trim();
+  if (!state.reframeAssumptions && state.reframeQuestions.length === 0) {
+    alert('Add at least one assumption or clarifying question before continuing.'); return;
+  }
+  const prompt = `CASE: ${state.caseText}
+
+CANDIDATE'S REFRAME:
+Assumptions identified: ${state.reframeAssumptions}
+Clarifying questions: ${state.reframeQuestions.join('; ')}
+Available data columns: ${state.dataColumns.join(', ') || 'not specified'}
+
+Evaluate this reframe. Did the candidate successfully challenge the brief? Did they identify the key hidden assumptions? Are the clarifying questions strong? What's missing?`;
+
+  const feedbackEl = document.getElementById('ai-reframe-feedback');
+  await callClaude(prompt, feedbackEl, 'gold-border');
+  state.phaseDone[1] = true;
+
+  // Prime Phase 2
+  document.getElementById('ai-decompose-prompt').innerHTML = `<div class="ai-bubble"><div class="ai-label">Your Task</div><div class="ai-content">Now decompose the problem. Break the top-level metric or issue into its component stages. What stages can you derive from the data columns available? Then decide which segment dimensions you'd cut across first.</div></div>`;
+  updateProgress();
+  goToPhase(2);
+}
+
+async function submitDecompose() {
+  const segs = [...document.querySelectorAll('.seg-cell.picked')].map(c => c.textContent.trim());
+  if (state.stages.length === 0) { alert('Add at least one stage to decompose into.'); return; }
+  const prompt = `CASE: ${state.caseText}
+
+CANDIDATE'S DECOMPOSITION:
+Stages identified: ${state.stages.map((s,i)=>`S${i+1}: ${s}`).join('; ')}
+Segment dimensions selected: ${segs.join(', ')}
+Data columns available: ${state.dataColumns.join(', ') || 'as per case'}
+
+Evaluate this decomposition. Are the stages logically derived from the data? Did they cover supply vs demand? Did they pick the right segment dimensions? What's the most important stage/segment they missed?`;
+
+  const feedbackEl = document.getElementById('ai-decompose-feedback');
+  await callClaude(prompt, feedbackEl, '');
+  state.phaseDone[2] = true;
+
+  // Prime Phase 3
+  document.getElementById('ai-hyp-prompt').innerHTML = `<div class="ai-bubble purple-border"><div class="ai-label" style="color:var(--purple)">Your Task</div><div class="ai-content">Build your hypotheses. Based on your decomposition (stages: <strong>${state.stages.slice(0,3).join(', ')}${state.stages.length>3?'...':''}</strong>), what are the ranked, falsifiable hypotheses? Each must be testable with the data columns you have.</div></div>`;
+  updateProgress();
+  goToPhase(3);
+}
+
+async function submitHypotheses() {
+  const hyps = state.hypotheses.filter(h => h.trim());
+  if (hyps.length === 0) { alert('Add at least one hypothesis.'); return; }
+  const ftypes = [...document.querySelectorAll('[id^="ftype-"].selected')].map(el => el.textContent.trim());
+  const prompt = `CASE: ${state.caseText}
+
+CANDIDATE'S HYPOTHESES:
+${hyps.map((h,i)=>`H${i+1}: ${h}`).join('\n')}
+Failure types identified: ${ftypes.join(', ')}
+Decomposition stages: ${state.stages.join('; ')}
+
+Evaluate these hypotheses. Are they truly falsifiable? Are they ranked in the right order? Did the candidate cover both demand-side and supply-side causes? Is any critical hypothesis missing given the case and available data?`;
+
+  const feedbackEl = document.getElementById('ai-hyp-feedback');
+  await callClaude(prompt, feedbackEl, 'purple-border');
+  state.phaseDone[3] = true;
+
+  // Prime Phase 4
+  document.getElementById('ai-data-prompt').innerHTML = `<div class="ai-bubble teal-border"><div class="ai-label" style="color:var(--teal)">Your Task</div><div class="ai-content">Now map your hypotheses to data tests. For each hypothesis, what specific metric, query, or derived field from your available columns would <strong>confirm or kill</strong> it? Also flag any data quality assumptions you're making.</div></div>`;
+  updateProgress();
+  goToPhase(4);
+}
+
+async function submitDataStrategy() {
+  state.dataStrategy = document.getElementById('data-strategy-text').value.trim();
+  if (!state.dataStrategy) { alert('Describe your data strategy before continuing.'); return; }
+  const prompt = `CASE: ${state.caseText}
+Available data columns: ${state.dataColumns.join(', ') || 'as per case'}
+Hypotheses: ${state.hypotheses.filter(h=>h.trim()).join('; ')}
+
+CANDIDATE'S DATA STRATEGY:
+${state.dataStrategy}
+Explicit assumptions flagged: ${state.assumptions.join('; ')}
+
+Evaluate the data strategy. Does each metric clearly test a specific hypothesis? Are the derivations feasible given the columns available? Did the candidate surface the right data quality risks? Are there high-value analyses they missed?`;
+
+  const feedbackEl = document.getElementById('ai-data-feedback');
+  await callClaude(prompt, feedbackEl, 'teal-border');
+  state.phaseDone[4] = true;
+
+  // Prime Phase 5
+  document.getElementById('ai-checkin-prompt').innerHTML = `<div class="ai-bubble gold-border"><div class="ai-label" style="color:var(--gold)">Check-in Guidance</div><div class="ai-content">This is check-in moment #2 (after hypotheses). A great check-in: <strong>1)</strong> summarizes where you are, <strong>2)</strong> confirms you're solving the right problem, <strong>3)</strong> invites correction without appearing lost. It should be 2–3 sentences max.</div></div>`;
+  updateProgress();
+  goToPhase(5);
+}
+
+async function submitCheckin() {
+  state.checkinText = document.getElementById('checkin-text').value.trim();
+  state.checkinPivot = document.getElementById('checkin-pivot').value.trim();
+  if (!state.checkinText) { alert('Write your check-in statement first.'); return; }
+  const prompt = `CASE: ${state.caseText}
+
+CANDIDATE'S CHECK-IN STATEMENT:
+"${state.checkinText}"
+Pivot logic if redirected: "${state.checkinPivot}"
+
+Evaluate this check-in. Does it project confidence while inviting feedback? Does it summarize the current direction clearly? Does it show the candidate is driving the conversation, not just waiting to be told what to do? Is it too long, too short, or just right?`;
+
+  const feedbackEl = document.getElementById('ai-checkin-feedback');
+  await callClaude(prompt, feedbackEl, 'gold-border');
+  state.phaseDone[5] = true;
+
+  // Prime Phase 6
+  document.getElementById('ai-rec-prompt').innerHTML = `<div class="ai-bubble green-border"><div class="ai-label" style="color:var(--green)">Your Task</div><div class="ai-content">Commit to a recommendation. Tier it: <strong>immediate</strong> (this week), <strong>short-term</strong> (2–4 weeks), and <strong>ongoing monitoring</strong>. Then write your one-sentence recommendation — the single most important thing the client should do first.</div></div>`;
+  updateProgress();
+  goToPhase(6);
+}
+
+async function submitRecommendation() {
+  state.recImmediate  = document.getElementById('rec-immediate').value.trim();
+  state.recShortterm  = document.getElementById('rec-shortterm').value.trim();
+  state.recMonitoring = document.getElementById('rec-monitoring').value.trim();
+  state.recOneliner   = document.getElementById('rec-oneliner').value.trim();
+  if (!state.recOneliner) { alert('Write your one-sentence recommendation before continuing.'); return; }
+
+  // Full debrief prompt
+  const debriefPrompt = `You are scoring a candidate for the Senior Business Operations & Strategy role at Northslope Technologies (a Palantir Foundry consulting firm). 
+
+Here is their complete case walkthrough:
+
+CASE: ${state.caseText}
+DATA COLUMNS IDENTIFIED: ${state.dataColumns.join(', ')}
+
+PHASE 1 - REFRAME:
+Assumptions: ${state.reframeAssumptions}
+Clarifying questions: ${state.reframeQuestions.join('; ')}
+
+PHASE 2 - DECOMPOSITION:
+Stages: ${state.stages.map((s,i)=>`S${i+1}: ${s}`).join('; ')}
+
+PHASE 3 - HYPOTHESES:
+${state.hypotheses.filter(h=>h.trim()).map((h,i)=>`H${i+1}: ${h}`).join('\n')}
+
+PHASE 4 - DATA STRATEGY:
+${state.dataStrategy}
+Assumptions flagged: ${state.assumptions.join('; ')}
+
+PHASE 5 - CHECK-IN:
+"${state.checkinText}"
+Pivot logic: "${state.checkinPivot}"
+
+PHASE 6 - RECOMMENDATION:
+Immediate: ${state.recImmediate}
+Short-term: ${state.recShortterm}
+Monitoring: ${state.recMonitoring}
+One-liner: ${state.recOneliner}
+
+Score the candidate on EACH of these 7 dimensions, 1-5:
+1. Problem Decomposition (did they break the metric into components?)
+2. Hypothesis Quality (falsifiable, ranked, covers demand+supply?)
+3. Data Literacy (do their tests match the available columns?)
+4. Assumption Transparency (did they surface data gaps?)
+5. Client Communication (check-in quality, ownership, confidence?)
+6. Recommendation Quality (tiered, actionable, measurable?)
+7. Creativity (any non-obvious angles or alternative approaches?)
+
+Format your response EXACTLY as:
+SCORES:
+Problem Decomposition: X/5
+Hypothesis Quality: X/5
+Data Literacy: X/5
+Assumption Transparency: X/5
+Client Communication: X/5
+Recommendation Quality: X/5
+Creativity: X/5
+
+OVERALL: X/35
+
+STRONGEST MOMENT:
+[2 sentences on the best thing they did]
+
+BIGGEST GAP:
+[2 sentences on the most important thing to improve]
+
+COACHING NOTES:
+[3 specific, actionable coaching tips they should practice before their real interview]
+
+NORTHSLOPE FIT:
+[1 sentence — are they ready for the interview, close, or need more practice?]`;
+
+  const debriefEl = document.getElementById('debrief-content');
+  state.phaseDone[6] = true;
+  updateProgress();
+  goToPhase(7);
+
+  debriefEl.innerHTML = `<div class="ai-bubble" style="border-left-color:var(--purple)"><div class="ai-label thinking"><span class="dot" style="background:var(--purple)"></span>Generating full debrief...</div><div id="debrief-stream" class="ai-content cursor-blink"></div></div>`;
+  const streamEl = document.getElementById('debrief-stream');
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        stream: true,
+        messages: [{ role: 'user', content: debriefPrompt }]
+      })
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const lines = decoder.decode(value).split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.type === 'content_block_delta' && data.delta?.text) {
+              fullText += data.delta.text;
+              streamEl.innerHTML = formatAIText(fullText);
+            }
+          } catch(e) {}
+        }
+      }
+    }
+
+    streamEl.classList.remove('cursor-blink');
+    renderDebrief(fullText);
+    state.phaseDone[7] = true;
+    updateProgress();
+
+  } catch(e) {
+    debriefEl.innerHTML = `<div class="ai-bubble red-border"><div class="ai-label" style="color:var(--red)">Error</div><div class="ai-content">${e.message}</div></div>`;
+  }
+}
+
+function renderDebrief(text) {
+  // Parse scores
+  const scoreMap = {};
+  const scoreNames = ['Problem Decomposition','Hypothesis Quality','Data Literacy','Assumption Transparency','Client Communication','Recommendation Quality','Creativity'];
+  let total = 0;
+  scoreNames.forEach(name => {
+    const m = text.match(new RegExp(name + ':\\s*(\\d)/5'));
+    if (m) { scoreMap[name] = parseInt(m[1]); total += parseInt(m[1]); }
+  });
+  const overallM = text.match(/OVERALL:\s*(\d+)\/35/);
+  if (overallM) total = parseInt(overallM[1]);
+
+  const scoreColors = {1:'var(--red)',2:'var(--red)',3:'var(--gold)',4:'var(--green)',5:'var(--teal)'};
+  const scoreHTML = scoreNames.map(name => {
+    const s = scoreMap[name] || 0;
+    return `<div class="score-card">
+      <div class="score-num" style="color:${scoreColors[s]||'var(--muted)'}">${s}<span style="font-size:14px;color:var(--faint)">/5</span></div>
+      <div class="score-card-label">${name}</div>
+    </div>`;
+  }).join('');
+
+  const overallColor = total >= 28 ? 'var(--green)' : total >= 21 ? 'var(--gold)' : 'var(--red)';
+  const overallLabel = total >= 28 ? 'Interview Ready' : total >= 21 ? 'Getting Close' : 'More Practice Needed';
+
+  // Extract sections
+  function extractSection(label, nextLabel) {
+    const rx = new RegExp(label + ':?\\s*([\\s\\S]*?)(?=' + nextLabel + ':|$)');
+    const m = text.match(rx);
+    return m ? m[1].trim() : '';
+  }
+
+  const strongest = extractSection('STRONGEST MOMENT', 'BIGGEST GAP');
+  const gap       = extractSection('BIGGEST GAP', 'COACHING NOTES');
+  const coaching  = extractSection('COACHING NOTES', 'NORTHSLOPE FIT');
+  const fit       = extractSection('NORTHSLOPE FIT', '~~~');
+
+  document.getElementById('debrief-content').innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px;">Full Debrief — Case Complete</div>
+
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:20px 24px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2)">
+      <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:${overallColor};line-height:1">${total}</div>
+      <div>
+        <div style="font-size:11px;color:var(--muted)">out of 35</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:${overallColor};margin-top:2px">${overallLabel}</div>
+      </div>
+    </div>
+
+    <div class="score-grid">${scoreHTML}</div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title"><div class="card-title-dot" style="background:var(--green)"></div>Strongest Moment</div>
+      <div style="font-size:13.5px;color:var(--text);line-height:1.7">${formatAIText(strongest)}</div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title"><div class="card-title-dot" style="background:var(--red)"></div>Biggest Gap</div>
+      <div style="font-size:13.5px;color:var(--text);line-height:1.7">${formatAIText(gap)}</div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title"><div class="card-title-dot" style="background:var(--purple)"></div>Coaching Notes</div>
+      <div style="font-size:13.5px;color:var(--text);line-height:1.8">${formatAIText(coaching)}</div>
+    </div>
+
+    <div class="checkin-bar">
+      <span style="flex-shrink:0">◈</span>
+      <div><strong>Northslope Fit:</strong> ${formatAIText(fit)}</div>
+    </div>
+
+    <div class="btn-row" style="margin-top:24px">
+      <button class="btn btn-primary" onclick="resetAll()">↺ Practice Another Case</button>
+      <button class="btn btn-ghost" onclick="goToPhase(1)">Review Phase 1</button>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════════════════
+function resetAll() {
+  Object.assign(state, {
+    caseText:'',caseType:'',dataColumns:[],reframeAssumptions:'',reframeQuestions:[],
+    stages:[],hypotheses:[],failureTypes:[],dataStrategy:'',assumptions:[],
+    checkinText:'',checkinPivot:'',recImmediate:'',recShortterm:'',recMonitoring:'',recOneliner:'',
+    phaseDone:[false,false,false,false,false,false,false,false],currentPhase:0,aiHistory:[]
+  });
+  // Clear all inputs
+  document.querySelectorAll('textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.getElementById('case-type').value = '';
+  document.querySelectorAll('.chip.selected').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.seg-cell.picked').forEach(c => c.classList.remove('picked'));
+  document.querySelectorAll('[id^="ftype-"].selected').forEach(c => c.classList.remove('selected'));
+  ['reframe-questions-list','decomp-stages','hyp-list','assumption-tags'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.innerHTML = '';
+  });
+  ['ai-reframe-prompt','ai-reframe-feedback','ai-decompose-prompt','ai-decompose-feedback',
+   'ai-hyp-prompt','ai-hyp-feedback','ai-data-prompt','ai-data-feedback',
+   'ai-checkin-prompt','ai-checkin-feedback','ai-rec-prompt','ai-rec-feedback'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.innerHTML = '';
+  });
+  document.getElementById('debrief-content').innerHTML = `<div class="empty-state"><div class="empty-icon">⧗</div><div class="empty-text">Complete Phase 6 to generate your full debrief and scores.</div></div>`;
+  document.querySelectorAll('.phase-btn').forEach(b => { b.classList.remove('done'); });
+  goToPhase(0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decomposition Interview Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F4EE;
+    --ink: #1A1814;
+    --ink-mid: #3D3A34;
+    --ink-soft: #6B6760;
+    --ink-faint: #9E9B97;
+    --slate-blue: #2D4A6B;
+    --slate-blue-light: #E8EFF7;
+    --slate-blue-mid: #4A6E96;
+    --gold: #C4972A;
+    --gold-light: #F5EDD6;
+    --red: #B03A2E;
+    --red-light: #F5E6E4;
+    --green: #2A6B47;
+    --green-light: #E5F0EA;
+    --border: #D8D4CC;
+    --border-light: #EAE7E1;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* LAYOUT */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* HEADER */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0 24px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .brand-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--slate-blue);
+    letter-spacing: -0.01em;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .header-meta strong {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    background: var(--slate-blue);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .intro-block { }
+  .intro-block-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .intro-block-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.55;
+  }
+
+  /* SCORING LEGEND */
+  .legend {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-right: 4px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .chip-blue  { background: var(--slate-blue-light); color: var(--slate-blue); }
+  .chip-gold  { background: var(--gold-light); color: var(--gold); }
+  .chip-red   { background: var(--red-light); color: var(--red); }
+  .chip-green { background: var(--green-light); color: var(--green); }
+  .chip-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .chip-blue .chip-dot  { background: var(--slate-blue); }
+  .chip-gold .chip-dot  { background: var(--gold); }
+  .chip-red .chip-dot   { background: var(--red); }
+  .chip-green .chip-dot { background: var(--green); }
+
+  /* SECTION HEADER */
+  .section-head {
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 3px;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+
+  .q-header {
+    padding: 20px 24px 18px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .q-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--border);
+    line-height: 1;
+    min-width: 32px;
+    padding-top: 2px;
+  }
+  .q-header-content { flex: 1; }
+  .q-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .q-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .q-scenario {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    background: var(--cream);
+    border-left: 3px solid var(--slate-blue-mid);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ACCORDION */
+  .q-body {
+    display: none;
+    padding: 0;
+  }
+  .q-body.open { display: block; }
+
+  .q-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .q-section:last-child { border-bottom: none; }
+  .q-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .q-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .flow-step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 32px;
+    bottom: -10px;
+    width: 1px;
+    background: var(--border-light);
+  }
+  .flow-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .flow-icon.blue  { background: var(--slate-blue-light); color: var(--slate-blue); }
+  .flow-icon.gold  { background: var(--gold-light); color: var(--gold); }
+  .flow-icon.red   { background: var(--red-light); color: var(--red); }
+  .flow-icon.green { background: var(--green-light); color: var(--green); }
+  .flow-text {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding-top: 4px;
+  }
+  .flow-text strong { color: var(--ink); font-weight: 600; }
+
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 2px;
+  }
+  .pill {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--ink-mid);
+    background: var(--cream);
+  }
+
+  /* CHECKIN BAR */
+  .checkin-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold-light);
+    border: 1px solid rgba(196,151,42,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .checkin-bar svg { flex-shrink: 0; }
+
+  /* REDFLAGS */
+  .flag-list { display: flex; flex-direction: column; gap: 7px; }
+  .flag-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .flag-item::before {
+    content: '↳';
+    color: var(--red);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .green-list { display: flex; flex-direction: column; gap: 7px; }
+  .green-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .green-item::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* TOGGLE BUTTON */
+  .q-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    font-family: inherit;
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-weight: 500;
+    border-top: 1px solid var(--border-light);
+    transition: background 0.15s;
+    text-align: left;
+  }
+  .q-toggle:hover { background: var(--cream); }
+  .q-toggle .arrow {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.15s;
+    color: var(--ink-faint);
+    font-size: 10px;
+  }
+  .q-toggle.open .arrow { transform: rotate(180deg); background: var(--border-light); }
+
+  /* EVAL TABLE */
+  .eval-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .eval-col-head {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .eval-col-head.red  { color: var(--red); }
+  .eval-col-head.green { color: var(--green); }
+
+  /* FRAMEWORK CALLOUT */
+  .framework-box {
+    background: var(--slate-blue-light);
+    border: 1px solid rgba(45,74,107,0.15);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .fw-item-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--slate-blue);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .fw-item-text {
+    font-size: 12px;
+    color: var(--slate-blue-mid);
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-light);
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* PRINT */
+  @media print {
+    .q-body { display: block !important; }
+    .q-toggle { display: none; }
+  }
+
+  @media (max-width: 720px) {
+    .intro-strip { grid-template-columns: 1fr; }
+    .framework-box { grid-template-columns: 1fr 1fr; }
+    .eval-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-eyebrow">Internal Interview Document</span>
+      <div class="brand-name">[Company]</div>
+    </div>
+    <div class="header-meta">
+      <strong>Problem Decomposition Interview</strong><br>
+      Senior Business Operations & Strategy<br>
+      Interviewer Reference Guide
+    </div>
+  </header>
+
+  <!-- INTRO STRIP -->
+  <div class="intro-strip">
+    <div class="intro-block">
+      <div class="intro-block-label">Interview Purpose</div>
+      <div class="intro-block-text">Evaluate how candidates structure open-ended, ambiguous problems using data-driven reasoning — not technical knowledge or coding ability.</div>
+    </div>
+    <div class="intro-block">
+      <div class="intro-block-label">Duration & Format</div>
+      <div class="intro-block-text">45–60 minutes. Conversational. One scenario presented verbally; interviewer plays the "client." Candidate drives the dialogue.</div>
+    </div>
+    <div class="intro-block">
+      <div class="intro-block-label">What We're Screening For</div>
+      <div class="intro-block-text">Smart + Want to Win: analytical thinking, structured creativity, ownership mentality, and tolerance for ambiguity under time pressure.</div>
+    </div>
+  </div>
+
+  <!-- SCORING LEGEND -->
+  <div class="legend">
+    <span class="legend-label">Tags</span>
+    <span class="chip chip-blue"><span class="chip-dot"></span>Analytical</span>
+    <span class="chip chip-gold"><span class="chip-dot"></span>Strategic</span>
+    <span class="chip chip-green"><span class="chip-dot"></span>Operations</span>
+    <span class="chip chip-red"><span class="chip-dot"></span>Product</span>
+  </div>
+
+  <!-- FRAMEWORK BOX -->
+  <div class="framework-box">
+    <div>
+      <div class="fw-item-title">Problem Solving</div>
+      <div class="fw-item-text">Empirical, evidence-based. Can they break a mess into components?</div>
+    </div>
+    <div>
+      <div class="fw-item-title">Creativity</div>
+      <div class="fw-item-text">Do they challenge the obvious framing? Generate non-obvious hypotheses?</div>
+    </div>
+    <div>
+      <div class="fw-item-title">Ownership</div>
+      <div class="fw-item-text">Do they drive the conversation, or wait to be led? Do they commit to a recommendation?</div>
+    </div>
+    <div>
+      <div class="fw-item-title">Chaos Tolerance</div>
+      <div class="fw-item-text">Do they stay calm and structured under ambiguity? Can they adapt mid-conversation?</div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS SECTION -->
+  <div class="section-head">
+    <div>
+      <div class="section-title">Decomposition Questions</div>
+      <div class="section-sub">Click each question card to expand interviewer guidance</div>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">01</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-blue">Analytical</span>
+          <span class="chip chip-gold">Strategic</span>
+        </div>
+        <div class="q-title">The Disappearing Revenue</div>
+        <div class="q-scenario">"A mid-size UK retailer tells you their online revenue dropped 18% over the past 90 days. Their traffic is flat, their product catalog hasn't changed, and their marketing spend is actually up. They want to know what happened and what to do. You have access to their transaction-level data: timestamp, product ID, customer ID, order value, payment method, device type, and region. Where do you start?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Clarify the metric.</strong> Is it revenue decline or conversion decline? Is it volume or average order value? Strong candidates distinguish these immediately.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Segment before diagnosing.</strong> They should want to slice by region, device, payment method, and product category to isolate where the drop is concentrated — not treat it as uniform.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Build hypotheses from the segments.</strong> e.g., "If mobile is the culprit, I'd suspect a checkout UX change or payment gateway issue." They should generate 3–5 specific hypotheses ranked by testability.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Identify what data confirms or kills each hypothesis.</strong> e.g., "Look at cart abandonment rate by device — if mobile abandonment spiked at payment step, that's the fault zone."</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Recommend a decision, not just an analysis.</strong> They should end with a prioritized action: what to fix first, how to measure recovery, and what to monitor going forward.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Is the decline uniform across all products?</span>
+          <span class="pill">Any recent site or checkout changes?</span>
+          <span class="pill">Is cart abandonment rate up?</span>
+          <span class="pill">Any competitor pricing shifts?</span>
+          <span class="pill">Which device types show the drop?</span>
+          <span class="pill">Has average order value changed?</span>
+          <span class="pill">Any regional clustering?</span>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title">Assumptions They Should Explicitly State</div>
+        <div class="pill-list">
+          <span class="pill">Traffic quality may have changed even if volume hasn't</span>
+          <span class="pill">Revenue = volume × AOV, both need checking</span>
+          <span class="pill">90-day window may mask a sudden vs gradual shift</span>
+          <span class="pill">Marketing mix shift may have changed customer intent</span>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After segmentation step: "Does this breakdown match what you'd expect?" — After hypotheses: "Am I missing a major driver you'd want me to consider?" — Before final recommendation: "Is there a constraint I should factor in before I give you a priority?"
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Jumps to a single cause without segmenting</div>
+              <div class="flag-item">Can't distinguish between revenue, conversion, and AOV</div>
+              <div class="flag-item">Proposes more data collection without forming hypotheses</div>
+              <div class="flag-item">Ends with analysis but no recommendation</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Immediately segments before theorizing</div>
+              <div class="green-item">Generates multiple falsifiable hypotheses</div>
+              <div class="green-item">Links each hypothesis to a specific data test</div>
+              <div class="green-item">Offers a prioritized recovery plan, not just a diagnosis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">02</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-green">Operations</span>
+          <span class="chip chip-blue">Analytical</span>
+        </div>
+        <div class="q-title">The Overloaded Hospital Department</div>
+        <div class="q-scenario">"A hospital has flagged that one of its outpatient departments has unusually long wait times — averaging 47 minutes above their target. You're given anonymized visit-level data: patient ID, arrival time, check-in time, appointment time, appointment type, clinician ID, room ID, and discharge time. You have two hours to identify the root cause and a set of actionable recommendations. Walk me through your approach."</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Decompose the wait time into stages.</strong> Arrival → check-in, check-in → room assignment, room → clinician, clinician → discharge. Which stage is absorbing the excess 47 minutes?</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Separate demand-side vs supply-side hypotheses.</strong> Demand: volume spikes, no-show patterns, walk-in vs appointment mix. Supply: clinician utilization, room bottlenecks, appointment type complexity.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Look for temporal and structural clustering.</strong> Are delays worse on specific days, times, or with specific clinicians? A staffing vs scheduling problem shows different patterns than a room capacity problem.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Model the impact of proposed interventions.</strong> If walk-in patients are 30% of volume but cause 70% of delay, capping walk-ins is a higher-leverage fix than adding rooms.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Rank recommendations by impact and ease of implementation.</strong> Consider what can be deployed in one week vs what requires a longer process change.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">What's the target wait time vs actual?</span>
+          <span class="pill">Is this department-wide or specific appointment types?</span>
+          <span class="pill">Has volume grown recently?</span>
+          <span class="pill">Is there a scheduling system already in place?</span>
+          <span class="pill">Are walk-ins vs booked appointments tracked?</span>
+          <span class="pill">How many clinicians are on duty vs capacity?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After stage decomposition: "Does this breakdown feel right, or is there a stage I'm missing?" — After hypotheses: "Which of these would be most surprising if it turned out to be true?" — After recommendations: "Is there a political or resource constraint that would block any of these?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Treats wait time as a single metric without decomposing stages</div>
+              <div class="flag-item">Only looks at one variable (e.g., staff count)</div>
+              <div class="flag-item">Recommendations not tied to data findings</div>
+              <div class="flag-item">Doesn't consider feasibility of interventions</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Naturally decomposes wait time into stages</div>
+              <div class="green-item">Distinguishes demand-side vs supply-side root causes</div>
+              <div class="green-item">Quantifies expected impact of recommendations</div>
+              <div class="green-item">Considers implementation constraints proactively</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">03</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-red">Product</span>
+          <span class="chip chip-gold">Strategic</span>
+        </div>
+        <div class="q-title">The One-Week Taxi Intelligence System</div>
+        <div class="q-scenario">"You're handed 8,000 records of London taxi data with eight columns: trip ID, fare amount, pickup location, dropoff location, pickup time, dropoff time, distance, and driver ID. A client wants a deployable product built in one week that makes their taxi operations smarter. You don't need to code anything right now — walk me through how you'd scope, design, and prioritize the solution."</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Define "smarter" before designing anything.</strong> Is the client trying to maximize revenue per trip? Reduce dead miles? Improve driver allocation? A strong candidate rejects vague briefs and anchors to a specific objective.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Explore what the data can actually tell you.</strong> From these 8 columns: fare per mile efficiency, peak demand zones by hour/day, driver performance vs avg, high-value route clusters, and pricing anomalies are all derivable.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Scope ruthlessly for a one-week build.</strong> What's the minimum useful output? E.g., a dashboard showing demand heatmaps by time-of-day + driver efficiency scores is deployable in a week. A full dynamic pricing engine is not.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Name the components without over-engineering.</strong> Data ingestion → processing layer (derive speed, efficiency metrics) → visualization/output layer (Foundry dashboard or simple API). They should sketch this, not just describe it.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Identify risks and what they'd validate first.</strong> Data quality assumptions (e.g., are coordinates clean?), user adoption of output, and whether the insight actually changes behavior.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">What decision does the client want to make with this?</span>
+          <span class="pill">Who is the end user — dispatcher, driver, exec?</span>
+          <span class="pill">Is this data historical or does it update live?</span>
+          <span class="pill">Are there existing systems this needs to integrate with?</span>
+          <span class="pill">What does success look like at end of week one?</span>
+          <span class="pill">Are location fields lat/long or named zones?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After defining objective: "That's the direction I'd take this — does that align with what the business actually needs?" — After scoping: "Given that constraint, does a one-week v1 feel realistic, or should I adjust scope further?" — After architecture sketch: "Is there a part of this you'd want to go deeper on?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Jumps to building ML models without clarifying the problem</div>
+              <div class="flag-item">Can't distinguish what's derivable from the 8 columns</div>
+              <div class="flag-item">Doesn't scope for the one-week constraint</div>
+              <div class="flag-item">Proposes components without a user or decision in mind</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Reframes the brief before touching the data</div>
+              <div class="green-item">Identifies what the 8 columns can/can't support</div>
+              <div class="green-item">Scopes to a deliverable that fits the timeline</div>
+              <div class="green-item">Considers end-user adoption, not just technical output</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">04</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-gold">Strategic</span>
+          <span class="chip chip-green">Operations</span>
+        </div>
+        <div class="q-title">The Warehouse That Can't Keep Up</div>
+        <div class="q-scenario">"A logistics company tells you their flagship warehouse has seen on-time dispatch rates fall from 94% to 78% over the past 6 months, with no obvious cause. You're given data on: order ID, order entry time, pick start time, pack start time, dispatch time, SKU count per order, picker ID, packer ID, and dock door used. Where do you begin and what do you expect to find?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Map the process stages from the data.</strong> Order entry → pick → pack → dispatch. Calculate time-in-stage for each order. The bottleneck will show as the stage with highest variance or longest average duration.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Look for the 6-month inflection point.</strong> Did order volume increase? Did SKU complexity increase? Did turnover in pickers/packers happen? The timing is a clue — something changed.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Test throughput vs complexity hypotheses.</strong> Are orders with higher SKU counts disproportionately late? Is a specific picker causing downstream delays? Are certain dock doors creating queues?</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Build an intervention priority matrix.</strong> Quick wins (schedule optimization, dock door reassignment) vs structural fixes (training, layout change). Separate what's fixable in days vs months.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Define success metrics and monitoring.</strong> Don't just fix and leave — tell the client what to track (stage time per order, per-picker throughput) and at what threshold to escalate.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Has order volume or complexity changed in 6 months?</span>
+          <span class="pill">Any staff turnover in the picking/packing teams?</span>
+          <span class="pill">Are dispatch time targets fixed or variable by order type?</span>
+          <span class="pill">Is the 78% uniform across shifts or worse at specific times?</span>
+          <span class="pill">Are there seasonal patterns in the data?</span>
+          <span class="pill">How many dock doors are available vs in use?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After stage mapping: "Before I go deeper — is there a stage you already suspect is the problem?" — After bottleneck analysis: "Does the pattern I'm describing match what the ops team is experiencing on the floor?" — After recommendations: "What would change first if I'm right about the cause?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Treats dispatch rate as the only metric</div>
+              <div class="flag-item">Doesn't use the 6-month timeline as a diagnostic anchor</div>
+              <div class="flag-item">Suggests solutions without identifying the bottleneck stage</div>
+              <div class="flag-item">Ignores person-level data (pickers, packers) entirely</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Immediately maps data columns to process stages</div>
+              <div class="green-item">Uses 6-month inflection as a key diagnostic signal</div>
+              <div class="green-item">Tests both structural and behavioral hypotheses</div>
+              <div class="green-item">Separates quick wins from structural changes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">05</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-red">Product</span>
+          <span class="chip chip-blue">Analytical</span>
+          <span class="chip chip-gold">Strategic</span>
+        </div>
+        <div class="q-title">The Feature Nobody Uses</div>
+        <div class="q-scenario">"A SaaS company launched a new collaboration feature 3 months ago. The product team expected 40% of users to adopt it within 90 days; actual adoption is at 9%. Leadership is debating whether to kill the feature or invest in fixing it. You're given user-level data: user ID, company ID, account tier, days since signup, number of logins in last 30 days, whether the feature was used, and if so, how many times. What would you recommend and how would you get there?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Challenge the 40% target first.</strong> Was it evidence-based or a guess? If it was aspirational, 9% may not be a failure — it may be the product finding its right-fit segment.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Profile adopters vs non-adopters.</strong> Do the 9% cluster in specific account tiers, company sizes, or tenure bands? If adoption is high in enterprise accounts and low in SMB, the feature may be working exactly as it should for its target.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Separate discovery failures from value failures.</strong> Low adoption could mean users never found the feature, or that they found it and decided it wasn't valuable. These require completely different fixes.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Look at retention among adopters.</strong> If the 9% who used it used it repeatedly, that's a discovery problem, not a value problem — and the fix is surface/onboarding, not the feature itself.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Frame the kill vs invest decision clearly.</strong> Kill if: no adoption in target segment, one-time use with no repeat, qualitative signals of confusion. Invest if: strong retention in adopters, natural segment fit, fixable awareness gap.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">How was the 40% target derived?</span>
+          <span class="pill">Is adoption consistent across account tiers?</span>
+          <span class="pill">Was there an in-app announcement at launch?</span>
+          <span class="pill">Are the 9% who adopted churning or retaining?</span>
+          <span class="pill">What's the cost to maintain vs kill the feature?</span>
+          <span class="pill">Any qualitative feedback from adopters vs non-adopters?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After challenging the target: "Am I right to question the 40% baseline, or is there evidence it was grounded in user research?" — After profiling: "Do the adopter characteristics match the original target user persona?" — Before final recommendation: "Is there a timeline pressure on this decision I should factor in?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Accepts 40% as a valid benchmark without questioning it</div>
+              <div class="flag-item">Recommends killing or investing without segmenting adopters</div>
+              <div class="flag-item">Conflates discovery failures with product value failures</div>
+              <div class="flag-item">Doesn't use retention data as a signal</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Immediately challenges the benchmark's origin</div>
+              <div class="green-item">Profiles adopters vs non-adopters before deciding</div>
+              <div class="green-item">Distinguishes discovery from value failure</div>
+              <div class="green-item">Uses repeat usage as a key signal for the invest/kill call</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">06</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-gold">Strategic</span>
+          <span class="chip chip-green">Operations</span>
+          <span class="chip chip-red">Product</span>
+        </div>
+        <div class="q-title">The Client Who Wants Everything</div>
+        <div class="q-scenario">"You're three weeks into a consulting engagement. The client is a mid-size energy company. They initially asked for a procurement analytics dashboard. Now they're asking you to also build a supplier risk scoring model, automate their invoice reconciliation, and integrate a new vendor onboarding workflow — all within the original four-week timeline. Your technical lead says the original scope is already tight. How do you handle this, and how do you use data to have that conversation?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Separate the business need from the feature list.</strong> What underlying problem is the client trying to solve with each new request? Often scope creep is a symptom of unclear original success criteria.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Quantify the impact of each request.</strong> Which of the four items drives the most business value? Can that be determined from the data already collected — e.g., if invoice errors are causing measurable financial loss, reconciliation automation may outrank the dashboard.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Build a visible trade-off, not a refusal.</strong> "Here's what we can deliver in four weeks at current scope, and here's what gets dropped or de-scoped if we add X. Which trade-off do you want to make?" — This is a client conversation, not a unilateral decision.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Propose a phased roadmap.</strong> Deliver the original scope with high quality, then pitch phase 2 as a follow-on engagement. This protects delivery quality while keeping the relationship and opportunity alive.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Use data to anchor the conversation.</strong> Show the client the current build progress, the risk of quality degradation if scope expands, and the concrete value of the original deliverable on its own.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">What's driving the new requests — a specific event or pain?</span>
+          <span class="pill">Has the client's success criteria changed?</span>
+          <span class="pill">Is there budget or timeline flexibility on their side?</span>
+          <span class="pill">Which of the four items is most urgent to the business?</span>
+          <span class="pill">What happens if we deliver only the original scope excellently?</span>
+          <span class="pill">Who is championing the new requests internally?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          This question tests how they handle internal + client dynamics simultaneously. Probe: "How would you bring your technical lead into this conversation?" and "How would you frame the trade-off to someone who doesn't read data?" Strong candidates close the loop on both relationships.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Immediately says "no" without exploring the business need</div>
+              <div class="flag-item">Agrees to everything to avoid conflict</div>
+              <div class="flag-item">Doesn't use data to structure the trade-off conversation</div>
+              <div class="flag-item">Treats it as purely a project management problem, not a client relationship problem</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Separates the need behind each request before responding</div>
+              <div class="green-item">Quantifies impact of each item to drive prioritization</div>
+              <div class="green-item">Presents trade-offs visibly without being paternalistic</div>
+              <div class="green-item">Protects team delivery quality while keeping client trust</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EXTENDED CASES DIVIDER ── -->
+  <div style="margin: 48px 0 32px; padding: 20px 24px; background: var(--slate-blue); border-radius: 10px; display:flex; align-items:center; gap:16px;">
+    <div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Extended Case Bank</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;">New Industry & Scenario Variants</div>
+    </div>
+    <div style="margin-left:auto;font-size:12px;color:rgba(255,255,255,0.6);max-width:340px;line-height:1.5;">Covers energy, AI deployment, public sector, manufacturing, healthcare expansion, and delivery-specific scenarios not in the original six.</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">07</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-blue">Analytical</span>
+          <span class="chip chip-green">Operations</span>
+        </div>
+        <div class="q-title">The Energy Grid Anomaly</div>
+        <div class="q-scenario">"A renewable energy operator has seen 14 unplanned grid outages in the past 6 months — up from 2 in the prior period. You have sensor data per turbine: timestamp, turbine ID, output (kWh), wind speed, temperature, maintenance flag, and operator ID. Two hours to find the pattern and recommend action."</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Characterize the outages before hypothesizing.</strong> Are they clustered in time (specific days/shifts), in equipment (specific turbine IDs), in conditions (high wind, low temp), or in operator coverage? The pattern type determines the root cause family.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Apply the inflection point test.</strong> When exactly did the rate jump from 2 to 14? A step change on a specific date suggests a discrete trigger — a software update, a new operator, a maintenance schedule change. A gradual increase suggests cumulative equipment degradation.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Separate equipment vs human vs environmental hypotheses.</strong> Equipment: specific turbines failing (maintenance_flag correlation). Human: specific operator_ids on shift during outages. Environmental: temperature or wind speed outside operating range at outage timestamps.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Recommend under uncertainty.</strong> Safety-critical infrastructure can't wait for perfect data. If three turbines account for 11 of 14 outages, recommend immediate preventive maintenance on those units while full analysis runs. Don't let perfect analysis block necessary action.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Build a monitoring threshold.</strong> Define the alert condition — e.g., any turbine with output variance &gt;30% vs 30-day baseline triggers an inspection. The deliverable should be a live monitoring dashboard, not a one-time report.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Are outages concentrated on specific turbines or spread across all?</span>
+          <span class="pill">Did anything change operationally 6 months ago?</span>
+          <span class="pill">Is maintenance scheduled or reactive?</span>
+          <span class="pill">What's the cost per outage — financial and reputational?</span>
+          <span class="pill">Are environmental conditions logged at outage time?</span>
+          <span class="pill">What's the acceptable risk threshold before shutting down a turbine?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After outage characterization: "Do these patterns match what the ops team has observed, or am I missing a known factor?" — Before recommendation: "Is there a regulatory or safety constraint that affects what I can recommend here?" Safety-critical contexts demand explicit constraint-checking.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Forms hypotheses before characterizing the outage pattern</div>
+              <div class="flag-item">Treats all 14 outages as a uniform set without looking for clustering</div>
+              <div class="flag-item">Waits for "complete analysis" before recommending any action</div>
+              <div class="flag-item">Ignores the human/operator dimension entirely</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Characterizes outage pattern before hypothesizing</div>
+              <div class="green-item">Uses inflection point to narrow cause family</div>
+              <div class="green-item">Recommends interim action while full analysis runs</div>
+              <div class="green-item">Frames output as ongoing monitoring, not a one-time report</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">08</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-red">Product</span>
+          <span class="chip chip-blue">Analytical</span>
+          <span class="chip chip-gold">Strategic</span>
+        </div>
+        <div class="q-title">The AI Deployment That Isn't Working</div>
+        <div class="q-scenario">"A financial services client deployed an AI-powered loan underwriting model 3 months ago. Approval rates are similar to before, but loan default rates in the new cohort are running 40% higher than historical benchmarks. You have: application ID, approval decision (AI vs override), applicant features (anonymized), loan amount, and 90-day payment status. What happened and what do you do?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Separate model failure from deployment failure.</strong> A model can be technically correct but deployed wrongly (wrong threshold, wrong population, stale training data). These are different problems requiring different fixes. Don't assume the model itself is wrong.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Compare AI decisions vs human overrides.</strong> If defaults are concentrated in AI-approved loans and human-override loans are performing normally, the model is the problem. If both are defaulting at similar rates, the issue is population shift — the applicant mix changed, not the model.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Test for distribution shift.</strong> Do the applicant features of the 3-month cohort match the training population? If the model was trained on pre-pandemic data and the applicant pool is now materially different in income, employment type, or debt profile, the model is extrapolating outside its valid range.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Check the approval threshold.</strong> Was the model's decision threshold set correctly for business risk tolerance? A model trained to minimize false negatives (missed good loans) will inherently approve more risky applications. The threshold is a business decision, not just a technical one.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Recommend with urgency and specificity.</strong> If the model is causing measurable financial harm, the recommendation is to immediately revert to manual underwriting or tighten the threshold while investigation runs — not to "study further." Frame the cost of inaction explicitly.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">When was the model trained, and on what data?</span>
+          <span class="pill">What was the approval threshold set at and why?</span>
+          <span class="pill">Are human overrides available as a comparison group?</span>
+          <span class="pill">Has the applicant population mix changed?</span>
+          <span class="pill">What's the financial cost of each default?</span>
+          <span class="pill">Is there regulatory exposure on model decisions?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After model vs deployment distinction: "Is there a technical team who built the model I should loop in, or is this purely a business-side diagnosis?" — Before recommendation: "Is reverting to manual underwriting operationally feasible, or is there a staffing constraint I need to account for?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Assumes the model is wrong without checking the override comparison</div>
+              <div class="flag-item">Doesn't raise population/distribution shift as a hypothesis</div>
+              <div class="flag-item">Recommends "retrain the model" without diagnosing what changed</div>
+              <div class="flag-item">Doesn't treat this as urgent — 40% higher defaults is an active financial crisis</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Immediately separates model failure from deployment failure</div>
+              <div class="green-item">Uses AI vs override as a natural control group</div>
+              <div class="green-item">Raises distribution shift and threshold calibration as distinct hypotheses</div>
+              <div class="green-item">Recommends interim action before full diagnosis is complete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">09</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-green">Operations</span>
+          <span class="chip chip-red">Product</span>
+        </div>
+        <div class="q-title">The City Emergency Response Problem</div>
+        <div class="q-scenario">"A metropolitan government wants to reduce ambulance response times, currently averaging 11.4 minutes against a 9-minute target. You have 2 years of dispatch records: incident ID, call timestamp, dispatch timestamp, arrival timestamp, incident type, location zone, unit ID, and unit base location. Where do you start and what would you build?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Decompose the 11.4-minute average into stages.</strong> Call → dispatch (call-handling time), dispatch → departure (unit readiness time), departure → arrival (travel time). Each stage has a different intervention. The stage absorbing the most time is the leverage point.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Segment by zone, time of day, and incident type.</strong> Average response time is almost never uniform. Some zones are chronically underserved. Some incident types (e.g., cardiac vs minor injury) may have different dispatch priorities. Some hours have unit shortages. The segments reveal where the 2.4-minute gap actually lives.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Model unit positioning as the primary lever.</strong> Travel time is the most controllable variable. With 2 years of incident location data, you can identify demand hotspots by hour and zone — and build a positioning recommendation that pre-positions units where demand is predicted, not where they're parked by default.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Scope the Foundry deliverable explicitly.</strong> V1 (week 1–2): historical demand heatmap by zone × hour, current unit positioning vs demand gaps. V2: real-time repositioning recommendations dashboard. V3: predictive dispatch queue. Start with the map — it's immediately actionable without any integration work.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Name the stakeholder complexity.</strong> This is a government engagement. Changes to unit positioning require buy-in from union contracts, fire/EMS leadership, and elected officials. Technical correctness alone doesn't get implementation. A strong candidate raises this without being asked.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Which stage of the response chain is longest on average?</span>
+          <span class="pill">Are there zones that systematically exceed target?</span>
+          <span class="pill">How many units are available and where are they based?</span>
+          <span class="pill">Are there union or contractual constraints on unit repositioning?</span>
+          <span class="pill">Is this a real-time system or a planning tool?</span>
+          <span class="pill">What does success look like — average response, or worst-decile?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After stage decomposition: "Which of these stages does the department believe is the primary bottleneck?" — After positioning analysis: "Are there contractual or operational constraints on unit repositioning I should factor into the recommendation?" Public sector cases always have non-data constraints.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Treats 11.4 minutes as a single metric without stage decomposition</div>
+              <div class="flag-item">Jumps to "hire more units" without analyzing positioning efficiency</div>
+              <div class="flag-item">Ignores the stakeholder/political complexity of public sector</div>
+              <div class="flag-item">Proposes real-time system as V1 without scoping to what's feasible first</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Decomposes into call, dispatch, and travel stages immediately</div>
+              <div class="green-item">Identifies geographic/temporal segmentation as the key cut</div>
+              <div class="green-item">Positions unit repositioning as higher leverage than adding units</div>
+              <div class="green-item">Proactively raises stakeholder constraints without being prompted</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">10</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-blue">Analytical</span>
+          <span class="chip chip-green">Operations</span>
+        </div>
+        <div class="q-title">The Manufacturing Yield Problem</div>
+        <div class="q-scenario">"A factory producing precision components is seeing quality yield drop from 94% to 81% over 8 weeks. Each component has a record: component ID, production line, shift, machine ID, operator ID, material batch ID, temperature log, and pass/fail QC result. You have this week to find the cause."</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Apply the 4M lens: Machine, Material, Man, Method.</strong> Every manufacturing quality problem traces to one of these. The data gives you all four: machine_id (machine), material_batch_id (material), operator_id (man), production_line × shift (method/environment). Run each as a parallel hypothesis track.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Look for concentration first, causation second.</strong> Which machine_id, batch_id, shift, or operator_id appears in a disproportionate share of failures? If one machine accounts for 60% of failures at 13% of volume, that's your Pareto cause. Find the concentration before building any causal story.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Use the 8-week timeline as a diagnostic anchor.</strong> Did the decline start gradually or sharply? A sharp drop 6 weeks ago correlates with a discrete change — a new material batch, a machine service, an operator change, a shift schedule update. A gradual drift suggests cumulative wear or slow process drift.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Cross the temperature log against failure rate.</strong> Process temperature is a leading indicator in precision manufacturing. If temperature variance correlates with failure rate, you have an environmental/calibration cause that may cut across multiple machines and operators.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Recommend a containment action alongside the root cause investigation.</strong> While diagnosis runs, identify the highest-failure production line or shift and pause or increase QC frequency there. Don't let 13% defect rate ship while the analysis takes a week.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Is the failure rate uniform across all lines or concentrated?</span>
+          <span class="pill">Did anything change operationally 8 weeks ago?</span>
+          <span class="pill">Are material batches traceable to a single supplier?</span>
+          <span class="pill">What type of failure is QC catching — dimensional, surface, structural?</span>
+          <span class="pill">Is the temperature log automated or manually recorded?</span>
+          <span class="pill">What's the cost per failed component vs cost of a recall?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After 4M framing: "Does the plant manager have a working theory about cause already? I want to make sure I'm not re-investigating what the team already knows." — After concentration analysis: "Are there any batches currently in production that I should flag for immediate hold while we complete the analysis?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Doesn't use the 4M lens or equivalent multi-cause structure</div>
+              <div class="flag-item">Builds causal story before finding concentration</div>
+              <div class="flag-item">Ignores the temperature log entirely</div>
+              <div class="flag-item">No containment recommendation while analysis runs</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Applies 4M structure to map hypotheses to data columns</div>
+              <div class="green-item">Finds Pareto concentration before building causal story</div>
+              <div class="green-item">Uses 8-week timeline to narrow cause to discrete vs cumulative</div>
+              <div class="green-item">Recommends containment action in parallel with root cause work</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">11</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-gold">Strategic</span>
+          <span class="chip chip-blue">Analytical</span>
+        </div>
+        <div class="q-title">The New Market Entry With Bad Data</div>
+        <div class="q-scenario">"A healthcare client wants to expand a telehealth service into three new states. They have patient data from two existing states: patient ID, state, visit type, visit duration, diagnosis code, payer type (insurance vs self-pay), and net revenue per visit. The data is 18 months old and incomplete in one state. Should they expand, and how would you use this data to inform the decision?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Assess data fitness before using it.</strong> 18-month-old healthcare data is potentially stale — payer mix, reimbursement rates, and telehealth regulation all shift meaningfully over 18 months. The first question is: is this data reliable enough to base a multi-state expansion on? If not, what's the cost of getting better data vs the cost of the delay?</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Extract what the data can and can't tell you.</strong> It can tell you: which visit types are most profitable, which payer mix yields the best margins, and which diagnosis codes drive volume. It can't tell you: whether the new states' populations match this payer/diagnosis profile, or whether local competition is different.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Build the market attractiveness case from what you have.</strong> Revenue per visit by payer type × visit type gives you a margin model. If you can estimate the addressable population in the new states (from public health data), you can sketch a revenue projection with explicit uncertainty ranges — not false precision.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Propose a sequenced expansion, not a simultaneous one.</strong> Enter the one state where the data is cleanest and population profile is most similar to existing markets. Use it as a live test. Expand to the other two once the model is validated in-market. This reduces decision risk without blocking expansion entirely.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Name the data gaps that would change your recommendation.</strong> "If the new states have a significantly higher self-pay population, our margin model breaks because self-pay revenue per visit is X% lower. That's the key variable I'd want to validate before committing to all three states simultaneously."</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">Why is the data 18 months old — is updated data available?</span>
+          <span class="pill">What's the competitive telehealth landscape in the new states?</span>
+          <span class="pill">Are there regulatory differences in telehealth licensure by state?</span>
+          <span class="pill">What's the capital commitment required per state entry?</span>
+          <span class="pill">What does incomplete mean in the one state — missing records or missing fields?</span>
+          <span class="pill">Is there a deadline forcing the expansion decision?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          After data fitness assessment: "Before I model the expansion, I want to flag that 18-month-old data in healthcare may have material limitations — is there a reason we're working with this vintage rather than more recent data?" — Before recommendation: "Is there a board deadline or capital raise that constrains the timeline for this decision?"
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Uses the data at face value without questioning its age or completeness</div>
+              <div class="flag-item">Gives a binary yes/no without acknowledging uncertainty</div>
+              <div class="flag-item">Recommends entering all three states simultaneously</div>
+              <div class="flag-item">Doesn't name which data gap would change the recommendation</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Questions data fitness before building the model</div>
+              <div class="green-item">Explicitly separates what the data can and can't tell you</div>
+              <div class="green-item">Proposes sequenced entry to reduce risk</div>
+              <div class="green-item">Names the specific variable that would break the recommendation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">12</div>
+      <div class="q-header-content">
+        <div class="q-tags">
+          <span class="chip chip-red">Product</span>
+          <span class="chip chip-gold">Strategic</span>
+          <span class="chip chip-green">Operations</span>
+        </div>
+        <div class="q-title">The Internal Tool Nobody Adopted</div>
+        <div class="q-scenario">"Your firm deployed a dashboard for a manufacturing client's procurement team 6 weeks ago. Expected 80% of the 45-person team to be weekly active users within 30 days. Actual: 9 users, mostly senior analysts. You have usage logs: user ID, department, seniority level, login count, features accessed, and session duration. The client is asking whether the project was a failure. How do you respond?"</div>
+      </div>
+    </div>
+    <button class="q-toggle" onclick="toggle(this)">
+      <span>View interviewer guidance</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="q-section-title">Ideal Logic Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon blue">1</div>
+            <div class="flow-text"><strong>Separate product failure from change management failure.</strong> A tool can work perfectly and still not get adopted. If the 9 users are getting real value (long sessions, all features accessed, repeat logins), the product is fine — the rollout process failed. These require completely different responses to the client.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon blue">2</div>
+            <div class="flow-text"><strong>Profile the 9 adopters vs the 36 non-adopters.</strong> Are adopters senior analysts because they're the only ones who were trained? Or because the tool genuinely only serves that persona? If the tool was designed for analysts but sold to the whole procurement team, the scope was misaligned from the start.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">3</div>
+            <div class="flow-text"><strong>Don't accept the framing that it's a failure yet.</strong> 6 weeks is early for enterprise tool adoption. The question to the client is: what was the evidence basis for the 80% / 30-day target? If it was aspirational rather than benchmarked, the target was wrong, not the product.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon gold">4</div>
+            <div class="flow-text"><strong>Present a recovery plan, not a post-mortem.</strong> Instead of defending or conceding, immediately propose: targeted training sessions for the non-adopter cohort, a 30-day re-engagement campaign, and a revised adoption target with a clear milestone. Take ownership of the outcome, not just the delivery.</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-icon green">5</div>
+            <div class="flow-text"><strong>Use your firm's credibility as a lever.</strong> The client chose you because of delivery quality. Frame this as: "Our job isn't done at deployment — it's done when your team is getting value. Here's what we're going to do in the next 30 days to get there." This is the ownership mindset the hiring framework specifically evaluates.</div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Questions the Candidate Should Ask</div>
+        <div class="pill-list">
+          <span class="pill">What training or onboarding was provided at launch?</span>
+          <span class="pill">Are the 9 adopters getting measurable value from the tool?</span>
+          <span class="pill">Was the 80% target agreed in the contract or internal?</span>
+          <span class="pill">What are non-adopters using instead — Excel, email, nothing?</span>
+          <span class="pill">Is there a manager or champion within the procurement team?</span>
+          <span class="pill">What's the client's patience timeline before escalating?</span>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Check-in Cadence</div>
+        <div class="checkin-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          This case tests emotional intelligence as much as analytical skill. Strong probe: "How would you handle this conversation if the client is visibly frustrated?" and "Would you involve your manager before responding, or handle it directly?" — Both answers reveal ownership vs escalation instincts.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="q-section-title">Evaluation Signals</div>
+        <div class="eval-grid">
+          <div>
+            <div class="eval-col-head red">Red Flags</div>
+            <div class="flag-list">
+              <div class="flag-item">Immediately concedes it's a failure to appease the client</div>
+              <div class="flag-item">Defends the delivery without diagnosing adoption failure type</div>
+              <div class="flag-item">No recovery plan — only analysis of what went wrong</div>
+              <div class="flag-item">Doesn't distinguish product failure from change management failure</div>
+            </div>
+          </div>
+          <div>
+            <div class="eval-col-head green">Strong Signals</div>
+            <div class="green-list">
+              <div class="green-item">Separates product quality from change management failure</div>
+              <div class="green-item">Profiles adopters vs non-adopters before accepting the failure framing</div>
+              <div class="green-item">Questions the 80% target's basis before defending against it</div>
+              <div class="green-item">Leads with a recovery plan and takes explicit ownership of the outcome</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    Prepared for internal interviewer use · [Company] · Senior Business Operations & Strategy<br>
+    Treat as confidential
+  </div>
+
+</div>
+
+<script>
+function toggle(btn) {
+  const card = btn.closest('.q-card');
+  const body = card.querySelector('.q-body');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.querySelector('span:first-child').textContent = isOpen ? 'View interviewer guidance' : 'Hide interviewer guidance';
+}
+</script>
+</body>
+</html>
